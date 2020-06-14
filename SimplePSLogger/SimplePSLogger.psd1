@@ -31,7 +31,9 @@
     )
 		
     PrivateData       = @{
-        
+        PSData = @{
+            Prerelease = 'alpha'
+        }
     }
 
     ProjectUri        = "https://github.com/geekwhocodes/simple-ps-logger"
