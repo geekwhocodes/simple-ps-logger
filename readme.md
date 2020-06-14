@@ -1,6 +1,5 @@
 # Simple PowerShell Logger Module
 ![](https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square) ![](https://img.shields.io/github/deployments/geekwhocodes/Simple-PS-Logger/github-pages?label=docs&style=flat-square)
-![](https://img.shields.io/github/languages/code-size/geekwhocodes/simple-ps-logger?style=flat-square) 
 ![](https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square)
 
 
@@ -11,11 +10,11 @@
 
 Below is a table contains our modules including built in provider modules.
 
-| Description                                   | Module Name              | PowerShell Gallery Link | Downloads
-| --------------------------------------------- | ------------------------ | ----------------------- | -------------- | 
-| SimplePSLogger                                | `SimplePSLogger`         |   [![SimplePSLogger][SimplePSLoggerImg]][SimplePSLoggerUrl]        | ![Downloads](https://img.shields.io/powershellgallery/dt/SimplePSLogger?style=flat-square) | 
-| [SimplePSLogger.Console](#Build-in-Providers) | `SimplePSLogger.Console` | Sub module       |
-| [SimplePSLogger.File](#Build-in-Providers)    | `SimplePSLogger.File`    | Sub module       |
+| Description                                   | Module Name              | PowerShell Gallery Link                                   | Downloads                                                                                  |
+| --------------------------------------------- | ------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| SimplePSLogger                                | `SimplePSLogger`         | [![SimplePSLogger][SimplePSLoggerImg]][SimplePSLoggerUrl] | ![Downloads](https://img.shields.io/powershellgallery/dt/SimplePSLogger?style=flat-square) |
+| [SimplePSLogger.Console](#Build-in-Providers) | `SimplePSLogger.Console` | Sub module                                                |
+| [SimplePSLogger.File](#Build-in-Providers)    | `SimplePSLogger.File`    | Sub module                                                |
 
 ## Installation
 
