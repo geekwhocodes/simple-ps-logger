@@ -15,6 +15,10 @@
     Log message : 
         String - plain text string
         OtherTypes - json serialized string
+
+.PARAMETER Config
+    Required configuration provided by user
+
 .EXAMPLE
     TODO : Add examples
 
@@ -33,18 +37,27 @@ function New-File-Logger {
         $Level,
         [Parameter(Mandatory = $true, HelpMessage = "Log message")]
         [string]
-        $Message
+        $Message,
+        [Parameter(Mandatory = $false, HelpMessage = "Configuration object")]
+        [object]
+        $Config
     )
-    $Message = ' ' * 2 + $Message
 
-    $Message = $Message #| ConvertTo-Json -Compress -Depth 100
+    $Message = ' ' * 2 + $Message
 
     $logMessage = "[$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt"))] [$Name] [$($Level)]: $($Message)"
     
     <#  
-        TODO : make it configurable(get it wile registering it)
+        TODO : Robust error handling and config validation
     #>
-    $filePath = Join-Path $env:Temp -ChildPath "$Name.log"
+    if (-Not $Config) {
+        $filePath = Join-Path $env:Temp -ChildPath "$Name.log"
+        Write-Warning "File provider does not have LiteralfilePath configured, switching to auto generated file here $filepath"
+    }
+    else {
+        $filePath = $($Config["LiteralFilePath"])
+    }
+    
     Add-Content $filePath $logMessage -Encoding 'UTF8'
 }
 
