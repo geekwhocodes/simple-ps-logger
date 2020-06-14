@@ -71,13 +71,13 @@ $MyLogger.Dispose()
 | critical    | for critical messages    |
 
 ### Build in Providers
-| Provider           | Description                                                                                                                                         |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Console            | Simply outputs logs to console                                                                                                                      |
-| File               | Outputs logs to file(at this point file path is not configurable but it's on our roadmap ) logFile path is $env:Temp/SimplePSLoggerInstanceName.log |
-| Azure LogAnalytics | Coming soon                                                                                                                                         |
-| Azure AppInsights  | Cooming soon                                                                                                                                        |
-| Rolling Log File   | On the Roadmap                                                                                                                                      |
+| Provider           | Description                                                                                                                                         | Docs |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| Console            | Simply outputs logs to console                                                                                                                      | Link |
+| File               | Outputs logs to file(at this point file path is not configurable but it's on our roadmap ) logFile path is $env:Temp/SimplePSLoggerInstanceName.log | Link |
+| Azure LogAnalytics | Coming soon                                                                                                                                         | Link |
+| Azure AppInsights  | Cooming soon                                                                                                                                        | Link |
+| Rolling Log File   | On the Roadmap                                                                                                                                      | LInk |
 
 
 ## Reporting Issues and Feedback
