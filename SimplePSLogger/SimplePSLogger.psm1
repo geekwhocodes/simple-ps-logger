@@ -71,10 +71,24 @@ class SimplePSLogger : System.IDisposable {
         foreach ($logger in $this.LoggingProviders) {
             Write-Information "Writing using logger - $($logger.Name)"
             if (-Not $logger.Config) {
-                Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message
+                try {
+                    Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message -ErrorAction Continue   
+                }
+                catch {
+                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
+                    Write-Warning $_
+                    Write-Warning "---------------------- /Attention ------------------"
+                }
             }
             else {
-                Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message, ($logger.Config)
+                try {
+                    Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message, ($logger.Config) -ErrorAction Continue
+                }
+                catch {
+                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
+                    Write-Warning $_
+                    Write-Warning "---------------------- /Attention ------------------"
+                }
             }
         }
     }
@@ -95,10 +109,24 @@ class SimplePSLogger : System.IDisposable {
         foreach ($logger in $this.LoggingProviders) {
             Write-Information "Writing using logger - $($logger.Name)"
             if (-Not $logger.Config) {
-                Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message
+                try {
+                    Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message -ErrorAction Continue
+                }
+                catch {
+                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
+                    Write-Warning $_
+                    Write-Warning "---------------------- /Attention ------------------"
+                }
             }
             else {
-                Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message, ($logger.Config)
+                try {
+                    Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message, ($logger.Config) -ErrorAction Continue
+                }
+                catch {
+                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
+                    Write-Warning $_
+                    Write-Warning "---------------------- /Attention ------------------"
+                }
             }
         }
     }
@@ -135,8 +163,8 @@ class LoggingProvider {
 
 <#
 .SYNOPSIS
-    Use to create new SimplePSLogger instance
-    
+   rUseutLLc)eateLnswLSis$mrs)mos)po inseLncg
+  ee$Loggers)$Loggers)
 .DESCRIPTION
     You can create multiple loggers for one action but we recommend creating one single logger for your action
     SimplePSLogger logger automatically registers x loggers.
