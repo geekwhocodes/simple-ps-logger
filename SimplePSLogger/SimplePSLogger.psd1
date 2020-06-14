@@ -16,8 +16,8 @@
 
     Author            = 'Ganesh Raskar'
     Copyright         = '2019 Ganesh Raskar. All rights reserved.'
-    Description       = 'Experimental logger'
-    PowerShellVersion = '6.0.0'
+    Description       = 'Simple logging module for PowerShell, It is build for simplicity and usability.'
+    PowerShellVersion = '5.1.1'
 
     FunctionsToExport = @(
         'New-SimplePSLogger'
@@ -33,6 +33,12 @@
     PrivateData       = @{
         
     }
+
+    ProjectUri        = "https://github.com/geekwhocodes/simple-ps-logger"
+    LicenseUri        = "https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE"
+    IconUri           = ""
+    Tags              = "powershell, powershellcore, logging, logger, simplelogging, simplelogger,  pscore, log"
+    HelpInfoURI       = "https://github.com/geekwhocodes/simple-ps-logger/blob/master/readme.md"
 
     # HelpInfo URI of this module
     # HelpInfoURI = ''
