@@ -21,7 +21,11 @@ Below is a table contains our modules including built in provider modules.
 
 ### PowerShell Gallery
 
-Coming soon...
+```powershell
+# Install pre-release version 
+Install-Module -Name SimplePSLogger -AllowPrerelease
+
+```
 
 ### Import from Directory
 
