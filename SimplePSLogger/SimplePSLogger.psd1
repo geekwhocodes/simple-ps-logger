@@ -9,6 +9,7 @@
     RootModule        = 'SimplePSLogger.psm1'
     
     # Version of the module. Use this to track when the module was updated.
+
     ModuleVersion     = '0.0.3.1'
     
     # ID used to uniquely identify this module''
@@ -31,9 +32,10 @@
     )
 		
     PrivateData       = @{
-        
+        PSData = @{
+            Prerelease = 'alpha'
+        }
     }
-
     
     HelpInfoURI       = "https://github.com/geekwhocodes/simple-ps-logger/blob/master/readme.md"
 
