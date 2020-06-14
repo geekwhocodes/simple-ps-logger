@@ -1,0 +1,7 @@
+{
+  "Providers": {
+    "File": {
+      "LiteralFilePath": "G:\\Git\\simple-ps-logger\\Examples\\example-with-config-file\\example-with-config.log"
+    }
+  }
+}
