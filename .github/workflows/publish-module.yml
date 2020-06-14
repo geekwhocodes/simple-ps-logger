@@ -28,8 +28,9 @@ jobs:
       shell: pwsh
 
     # Runs a set of commands using the runners shell
-    - name: Create PSModule artifact
+    - name: Publish module to PS Gallery
       run: |
         $p = Get-ChildItem -Path ./SimplePSLogger
         Write-Host $p
+        Publish-Module -Path ./SimplePSLogger -NuGetApiKey ${{ secrets.PSG }}
       shell: pwsh
