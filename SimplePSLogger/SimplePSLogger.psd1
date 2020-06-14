@@ -33,11 +33,17 @@
 		
     PrivateData       = @{
         PSData = @{
-            Prerelease = 'alpha'
+            Prerelease               = 'alpha'
+            Tags                     = @('powershell', 'pscore', 'logger', 'logging', 'log', 'audit', 'governance', 'file logger', 'file', 'azure')
+            LicenseUri               = 'https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE'
+            ProjectUri               = 'https://github.com/geekwhocodes/simple-ps-logger'
+            RequireLicenseAcceptance = $true
         }
     }
     
-    HelpInfoURI       = "https://github.com/geekwhocodes/simple-ps-logger/blob/master/readme.md"
+    HelpInfoURI       = 'https://github.com/geekwhocodes/simple-ps-logger/blob/master/readme.md'
+
+    
 
     # HelpInfo URI of this module
     # HelpInfoURI = ''
