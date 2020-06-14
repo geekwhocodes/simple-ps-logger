@@ -36,10 +36,6 @@
         }
     }
 
-    ProjectUri        = "https://github.com/geekwhocodes/simple-ps-logger"
-    LicenseUri        = "https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE"
-    IconUri           = ""
-    Tags              = "powershell, powershellcore, logging, logger, simplelogging, simplelogger,  pscore, log"
     HelpInfoURI       = "https://github.com/geekwhocodes/simple-ps-logger/blob/master/readme.md"
 
     # HelpInfo URI of this module
