@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,21 +19,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    # Runs a single command using the runners shell
-    - name: Test pwsh
-      run: Write-Host "write to host test"
-      shell: pwsh
+      # Runs a single command using the runners shell
+      - name: Test pwsh
+        run: Write-Host "write to host test"
+        shell: pwsh
 
-    # Runs a set of commands using the runners shell
-    - name: Publish module to PS Gallery
-      run: |
-        try{
-            Publish-Module -Path ./SimplePSLogger -NuGetApiKey ${{ secrets.PSG }} -ProjectUri "https://github.com/geekwhocodes/simple-ps-logger" -Tags "powershell, powershellcore, logging, logger, simplelogging, simplelogger,  pscore, log" -LicenseUri "https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE" -ErrorAction Continue
-        }
-        catch{
-          Write-Warning $_
-        }
-      shell: pwsh
+      # Runs a set of commands using the runners shell
+      - name: Publish module to PS Gallery
+        run: |
+          try{
+              Publish-Module -Path ./SimplePSLogger -NuGetApiKey ${{ secrets.PSG }} -ProjectUri "https://github.com/geekwhocodes/simple-ps-logger" -Tags "powershell, powershellcore, logging, logger, simplelogging, simplelogger,  pscore, log" -LicenseUri "https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE"
+          }
+          catch{
+            Write-Error $_
+          }
+        shell: pwsh
