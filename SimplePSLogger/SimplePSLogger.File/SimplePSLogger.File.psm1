@@ -50,7 +50,7 @@ function New-File-Logger {
     <#  
         TODO : Robust error handling and config validation
     #>
-    if (-Not $Config) {
+    if (-Not $Config -or -Not $($Config["LiteralFilePath"])) {
         $filePath = Join-Path $([system.io.path]::GetTempPath()) -ChildPath "$Name.log"
         Write-Warning "File provider does not have LiteralfilePath configured, switching to auto generated file here $filepath"
     }
