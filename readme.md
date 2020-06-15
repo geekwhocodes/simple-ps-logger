@@ -1,5 +1,5 @@
 # Simple PowerShell Logger Module
-![](https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square) ![](https://img.shields.io/github/deployments/geekwhocodes/Simple-PS-Logger/github-pages?label=docs&style=flat-square)
+![](https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square) [![Docs][DocsImg]][DocsUrl]
 ![](https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square)
 
 
@@ -32,6 +32,12 @@ Install-Module -Name SimplePSLogger -AllowPrerelease
 Import-Module -Name drive:path\SimplePSLogger -Verbose
 ```
 Read more about importing module here [Import Module](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/import-module?view=powershell-7)
+
+
+## Docs 
+
+[SimplePSLogger Documentation](https://spsl.geekwhocodes.me/)
+
 
 ## Usage
 
@@ -102,3 +108,6 @@ If there is a feature you would like to see  in SimplePSLogger file an issue on 
 
 [SimplePSLoggerImg]:  https://img.shields.io/powershellgallery/v/SimplePSLogger?include_prereleases&label=SimplePSLogger&style=flat-square
 [SimplePSLoggerUrl]:  https://www.powershellgallery.com/packages/SimplePSLogger
+
+[DocsImg]: https://img.shields.io/github/deployments/geekwhocodes/Simple-PS-Logger/github-pages?label=docs&style=flat-square
+[DocsUrl]: https://spsl.geekwhocodes.me/

@@ -5,12 +5,15 @@ class SimplePSLogger : System.IDisposable {
     SimplePSLogger([string]$Name, [System.Collections.ArrayList]$LoggingProviders) {
         $this.Name = $Name
         $this.AddLoggingProviders($LoggingProviders)
+        Write-Information "Total logging providers registered - $($this.LoggingProviders.Count) "
         Write-Information "`n----------------- SimpleLogger instance initialized with name '$Name' ---------------------- `n"
     }
 
     <#------------------------------- Members Variables ----------------------------------#>
     hidden [string] $Name = $null
     hidden [System.Collections.ArrayList] $LoggingProviders = [System.Collections.ArrayList]@()
+    hidden [string] $DefaultLogLevel = "information"
+    hidden [hashtable] $LogLevels = [ordered]@{"verbose" = 0; "debug" = 1; "information" = 2; "warning" = 3; "error" = 4; "critical" = 5; "none" = 6 }
     <#------------------------------- Members Variables ----------------------------------#>
     
     hidden static [object] CreateLogger($Name, [System.Collections.ArrayList]$LoggingProviders) {
@@ -33,10 +36,18 @@ class SimplePSLogger : System.IDisposable {
         # TODO : optimize it later
         $c = ("verbose", "debug", "information", "warning", "error", "critical", "none").Contains($level)
         if (-Not $c) {
-            Write-Information "Log level '$level' not supported, defaulting to 'information'"
-            $level = 'information'
+            Write-Information "Log level '$level' not supported, defaulting to '$this.DefaultLogLevel'"
+            $level = $this.DefaultLogLevel
         }
         return $level
+    }
+
+    <#  This method checks configured loglevel(for provider) against 
+        user provided loglevel in .Log() method
+    #>
+    hidden [Boolean] ShouldLog($ConfugeredLevel, $Level) {
+        # provided level should be greater or equal to configured value.
+        return $this.LogLevels[$ConfugeredLevel] -le $this.LogLevels[$Level]
     }
 
     hidden [void] AddLoggingProviders([object[]]$loggers) {
@@ -72,7 +83,10 @@ class SimplePSLogger : System.IDisposable {
             Write-Information "Writing using logger - $($logger.Name)"
             if (-Not $logger.Config) {
                 try {
-                    Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message -ErrorAction Continue   
+                    # TODO : ShouldLog?
+                    if ($this.ShouldLog($this.DefaultLogLevel, $Level)) {
+                        Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message -ErrorAction Continue   
+                    }
                 }
                 catch {
                     Write-Warning "---------------------- Attention : error occurred while writing log------------------"
@@ -82,7 +96,11 @@ class SimplePSLogger : System.IDisposable {
             }
             else {
                 try {
-                    Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message, ($logger.Config) -ErrorAction Continue
+                    #TODO : ShouldLog?
+                    $UserProvidedLogLevel = if (-Not $logger.Config["LogLevel"]) { $this.DefaultLogLevel }else { $logger.Config["LogLevel"] }
+                    if ($this.ShouldLog($UserProvidedLogLevel, $Level)) {
+                        Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message, ($logger.Config) -ErrorAction Continue
+                    }
                 }
                 catch {
                     Write-Warning "---------------------- Attention : error occurred while writing log------------------"
@@ -93,42 +111,13 @@ class SimplePSLogger : System.IDisposable {
         }
     }
 
+
     [void] Log(
         [object]$Message
     ) {
-        $Level = "information"
-
-        if (-Not $($Message.GetType() -eq 'String')) {
-            $Message = $Message | ConvertTo-Json -Compress -Depth 100 
-        }
-
-        if ($this.LoggingProviders.Count -le 0) {
-            Write-Information "Zero logging providers registered."
-        }
-
-        foreach ($logger in $this.LoggingProviders) {
-            Write-Information "Writing using logger - $($logger.Name)"
-            if (-Not $logger.Config) {
-                try {
-                    Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message -ErrorAction Continue
-                }
-                catch {
-                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
-                    Write-Warning $_
-                    Write-Warning "---------------------- /Attention ------------------"
-                }
-            }
-            else {
-                try {
-                    Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message, ($logger.Config) -ErrorAction Continue
-                }
-                catch {
-                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
-                    Write-Warning $_
-                    Write-Warning "---------------------- /Attention ------------------"
-                }
-            }
-        }
+        # Default loglevel
+        $Level = $this.DefaultLogLevel
+        $this.Log($Level, $Message)
     }
     <#------------------------------- /Public methods : everythong is public tho :P ---------------------------------------#>
 }
@@ -224,13 +213,23 @@ function New-SimplePSLogger {
 
         Write-Information "----------------- Initializing SimpleLogger instance with name '$Name' ----------------------`n"
 
+        <#  NOTE : We can merge User provided with default configurations but 
+            merging deep hastables is complicated and expensive. 
+        #>
         if (-Not $Configuration) {
-            Write-Warning "Configuration path not provided, all providers will get configured without configurations(Not recommended)"
+            #TODO : Create and read default config file. 
+            Write-Warning "Configuration not provided, all providers will get configured without configurations(Not recommended)"
             $Configuration = @{
                 Providers = @{
-                    
+                    Console = @{
+                        Enabled  = $true
+                        LogLevel = "information"
+                    }
                 }
             }
+        }
+        else {
+            # TODO : will it be helpful if we enable Console provider forcefully?
         }
         $NestedProviders = $((Get-Module SimplePSLogger).NestedModules)
         if ($NestedProviders.Count -le 0) {
@@ -240,16 +239,20 @@ function New-SimplePSLogger {
         foreach ($provider in $NestedProviders) {
             $ProviderSectionName = $($provider.Name -replace "SimplePSLogger.", "")
             $ProviderSectionConfig = $Configuration.Providers[$ProviderSectionName]
-            $ProviderFunctionName = "New-$ProviderSectionName-Logger"
-            if (-Not $($provider.ExportedCommands.Keys.Contains($ProviderFunctionName))) {
-                Write-Information "$($provider.Name) does not have module member exposed in 'New-YuorLoogerName-Logger' format"
-            }
-            else {
-                $ProviderFunctionCode = [scriptblock]::Create($(Get-Command $ProviderFunctionName).Definition)
-                $ProviderLogger = [LoggingProvider]::Create($ProviderSectionName, $ProviderFunctionCode, $ProviderSectionConfig)
-                # .Add method retuns int32 in pipeline
-                $added = $Loggers.Add($ProviderLogger)
-            }
+
+            # IsEnabled?
+            if ($ProviderSectionConfig -and $ProviderSectionConfig["Enabled"]) {
+                $ProviderFunctionName = "New-$ProviderSectionName-Logger"
+                if (-Not $($provider.ExportedCommands.Keys.Contains($ProviderFunctionName))) {
+                    Write-Information "$($provider.Name) does not have module member exposed in 'New-YuorLoogerName-Logger' format"
+                }
+                else {
+                    $ProviderFunctionCode = [scriptblock]::Create($(Get-Command $ProviderFunctionName).Definition)
+                    $ProviderLogger = [LoggingProvider]::Create($ProviderSectionName, $ProviderFunctionCode, $ProviderSectionConfig)
+                    # .Add method retuns int32 in pipeline
+                    $added = $Loggers.Add($ProviderLogger)
+                }
+            }            
         }
         return [SimplePSLogger]::CreateLogger($Name, $Loggers)
     }
