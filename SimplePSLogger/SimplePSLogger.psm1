@@ -119,7 +119,7 @@ class SimplePSLogger : System.IDisposable {
         $Level = $this.DefaultLogLevel
         $this.Log($Level, $Message)
     }
-    <#------------------------------- /Public methods : everythong is public tho :P ---------------------------------------#>
+    <#------------------------------- /Public methods : everything is public tho :P ---------------------------------------#>
 }
 
 class LoggingProvider {
