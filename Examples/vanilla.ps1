@@ -1,16 +1,16 @@
 Import-Module -Name "../SimplePSLogger/SimplePSLogger.psd1"
 
 
-$MyLooger = New-SimplePSLogger -Name "vanilla-script"
+$MyLogger = New-SimplePSLogger -Name "vanilla-script"
 
 
-$MyLooger.Log("warning", "warn")
-$MyLooger.Log("skdufh", "unsupported level")
-$MyLooger.Log("critical", "critical")
-$MyLooger.Log("verbose", "verbose")
-$MyLooger.Log("information", "information")
-$MyLooger.Log("debug", "deubg")
-$MyLooger.Log("error", "error")
+$MyLogger.Log("warning", "warn")
+$MyLogger.Log("skdufh", "unsupported level")
+$MyLogger.Log("critical", "critical")
+$MyLogger.Log("verbose", "verbose")
+$MyLogger.Log("information", "information")
+$MyLogger.Log("debug", "deubg")
+$MyLogger.Log("error", "error")
 
 
 $obj = @{
@@ -27,7 +27,7 @@ $objectLog = @{
     }
 }
 
-$MyLooger.Log($objectLog)
+$MyLogger.Log($objectLog)
 
-$MyLooger.Dispose()
+$MyLogger.Dispose()
 

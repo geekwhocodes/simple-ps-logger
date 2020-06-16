@@ -28,13 +28,14 @@
 
     NestedModules     = @(
         'SimplePSLogger.Console\SimplePSLogger.Console.psm1',
-        'SimplePSLogger.File\SimplePSLogger.File.psm1'
+        'SimplePSLogger.File\SimplePSLogger.File.psm1',
+        'SimplePSLogger.AzLogAnalytics\SimplePSLogger.AzLogAnalytics.psm1'
     )
 		
     PrivateData       = @{
         PSData = @{
             Prerelease = 'alpha'
-            Tags       = @('powershell', 'pscore', 'logger', 'logging', 'log', 'audit', 'governance', 'filelogger', 'file', 'azure', 'linux', 'ubuntu', 'debian')
+            Tags       = @('powershell', 'pscore', 'logger', 'logging', 'log', 'audit', 'governance', 'loganalytics', 'filelogger', 'file', 'azure', 'linux', 'ubuntu', 'debian')
             LicenseUri = 'https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE'
             ProjectUri = 'https://github.com/geekwhocodes/simple-ps-logger'            
         }
