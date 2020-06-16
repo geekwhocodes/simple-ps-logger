@@ -28,7 +28,8 @@
 
     NestedModules     = @(
         'SimplePSLogger.Console\SimplePSLogger.Console.psm1',
-        'SimplePSLogger.File\SimplePSLogger.File.psm1'
+        'SimplePSLogger.File\SimplePSLogger.File.psm1',
+        'SimplePSLogger.AzLogAnalytics\SimplePSLogger.AzLogAnalytics.psm1'
     )
 		
     PrivateData       = @{
