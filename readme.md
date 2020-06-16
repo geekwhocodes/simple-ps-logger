@@ -10,11 +10,12 @@
 
 Below is a table contains our modules including built in provider modules.
 
-| Description                                   | Module Name              | PowerShell Gallery Link                                   | Downloads                                                                                  |
-| --------------------------------------------- | ------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| SimplePSLogger                                | `SimplePSLogger`         | [![SimplePSLogger][SimplePSLoggerImg]][SimplePSLoggerUrl] | ![Downloads](https://img.shields.io/powershellgallery/dt/SimplePSLogger?style=flat-square) |
-| [SimplePSLogger.Console](#Build-in-Providers) | `SimplePSLogger.Console` | Sub module                                                |
-| [SimplePSLogger.File](#Build-in-Providers)    | `SimplePSLogger.File`    | Sub module                                                |
+| Description                                          | Module Name                     | PowerShell Gallery Link                                   | Downloads                                                                                  |
+| ---------------------------------------------------- | ------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| SimplePSLogger                                       | `SimplePSLogger`                | [![SimplePSLogger][SimplePSLoggerImg]][SimplePSLoggerUrl] | ![Downloads](https://img.shields.io/powershellgallery/dt/SimplePSLogger?style=flat-square) |
+| [SimplePSLogger.Console](#Build-in-Providers)        | `SimplePSLogger.Console`        | Sub module                                                |
+| [SimplePSLogger.File](#Build-in-Providers)           | `SimplePSLogger.File`           | Sub module                                                |
+| [SimplePSLogger.AzLogAnalytics](#Build-in-Providers) | `SimplePSLogger.AzLogAnalytics` | Sub module                                                |
 
 ## Installation
 
