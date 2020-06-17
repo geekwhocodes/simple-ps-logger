@@ -1,10 +1,6 @@
-# index
+# readme
 
-title : SimplePSLogger description: Simple PowerShell Logging module, built for simplicity and usability.
-
-### tags: "powershell", "logging", "logger", "pscore", "linux", "file-logging", "azure-log-analytics"
-
-## Simple PowerShell Logger
+## Simple PowerShell Logger Module
 
 ![](https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square) [![](https://img.shields.io/github/deployments/geekwhocodes/Simple-PS-Logger/github-pages?label=docs&style=flat-square)](https://spsl.geekwhocodes.me/) ![](https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square)
 
@@ -17,8 +13,8 @@ Below is a table contains our modules including built in provider modules.
 | Description | Module Name | PowerShell Gallery Link | Downloads |
 | :--- | :--- | :--- | :--- |
 | SimplePSLogger | `SimplePSLogger` | [![](https://img.shields.io/powershellgallery/v/SimplePSLogger?include_prereleases&label=SimplePSLogger&style=flat-square)](https://www.powershellgallery.com/packages/SimplePSLogger) | ![Downloads](https://img.shields.io/powershellgallery/dt/SimplePSLogger?style=flat-square) |
-| [SimplePSLogger.Console](index.md#Build-in-Providers) | `SimplePSLogger.Console` | Sub module |  |
-| [SimplePSLogger.File](index.md#Build-in-Providers) | `SimplePSLogger.File` | Sub module |  |
+| [SimplePSLogger.Console](undefined.md#Build-in-Providers) | `SimplePSLogger.Console` | Sub module |  |
+| [SimplePSLogger.File](undefined.md#Build-in-Providers) | `SimplePSLogger.File` | Sub module |  |
 
 ### Installation
 
@@ -90,7 +86,7 @@ $MyLogger.Dispose()
 | Console | Simply outputs logs to console | Link |
 | File | Outputs logs to file\(at this point file path is not configurable but it's on our roadmap \) logFile path is $env:Temp/SimplePSLoggerInstanceName.log | Link |
 | Azure LogAnalytics | Coming soon | Link |
-| Azure AppInsights | Coming soon | Link |
+| Azure AppInsights | Cooming soon | Link |
 | Rolling Log File | On the Roadmap | LInk |
 
 ### Reporting Issues and Feedback
