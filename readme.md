@@ -10,11 +10,12 @@
 
 Below is a table contains our modules including built in provider modules.
 
-| Description                                   | Module Name              | PowerShell Gallery Link                                   | Downloads                                                                                  |
-| --------------------------------------------- | ------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| SimplePSLogger                                | `SimplePSLogger`         | [![SimplePSLogger][SimplePSLoggerImg]][SimplePSLoggerUrl] | ![Downloads](https://img.shields.io/powershellgallery/dt/SimplePSLogger?style=flat-square) |
-| [SimplePSLogger.Console](#Build-in-Providers) | `SimplePSLogger.Console` | Sub module                                                |
-| [SimplePSLogger.File](#Build-in-Providers)    | `SimplePSLogger.File`    | Sub module                                                |
+| Description                                          | Module Name                     | PowerShell Gallery Link                                   | Downloads                                                                                  |
+| ---------------------------------------------------- | ------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| SimplePSLogger                                       | `SimplePSLogger`                | [![SimplePSLogger][SimplePSLoggerImg]][SimplePSLoggerUrl] | ![Downloads](https://img.shields.io/powershellgallery/dt/SimplePSLogger?style=flat-square) |
+| [SimplePSLogger.Console](#Build-in-Providers)        | `SimplePSLogger.Console`        | Sub module                                                |
+| [SimplePSLogger.File](#Build-in-Providers)           | `SimplePSLogger.File`           | Sub module                                                |
+| [SimplePSLogger.AzLogAnalytics](#Build-in-Providers) | `SimplePSLogger.AzLogAnalytics` | Sub module                                                |
 
 ## Installation
 
@@ -82,13 +83,13 @@ $MyLogger.Dispose()
 | critical    | for critical messages    |
 
 ### Build in Providers
-| Provider           | Description                                                                                                                                         | Docs |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| Console            | Simply outputs logs to console                                                                                                                      | Link |
-| File               | Outputs logs to file(at this point file path is not configurable but it's on our roadmap ) logFile path is $env:Temp/SimplePSLoggerInstanceName.log | Link |
-| Azure LogAnalytics | Coming soon                                                                                                                                         | Link |
-| Azure AppInsights  | Cooming soon                                                                                                                                        | Link |
-| Rolling Log File   | On the Roadmap                                                                                                                                      | LInk |
+| Provider                                                                                                | Description                                                                                                                                              | Docs                                                                         |
+| ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Console                                                                                                 | Simply outputs logs to console                                                                                                                           | [Link](https://spsl.geekwhocodes.me/providers/simplepslogger.console)        |
+| File                                                                                                    | Outputs logs to file(at this point file path is not configurable but it's on our roadmap ) logFile path is $env:Temp/SimplePSLoggerInstanceName.log      | [Link](https://spsl.geekwhocodes.me/providers/simplepslogger.file)           |
+| [Azure LogAnalytics](https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/get-started-portal) | Send logs to [Azure Log Analytics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api#record-type-and-properties)Workspace | [Link](https://spsl.geekwhocodes.me/providers/simplepslogger.azloganalytics) |
+| [Azure AppInsights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)     | Cooming soon                                                                                                                                             | Link                                                                         |
+| Rolling Log File                                                                                        | On the Roadmap                                                                                                                                           | LInk                                                                         |
 
 
 ## Reporting Issues and Feedback

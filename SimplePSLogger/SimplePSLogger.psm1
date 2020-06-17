@@ -90,8 +90,11 @@ class SimplePSLogger : System.IDisposable {
                 }
                 catch {
                     Write-Warning "---------------------- Attention : error occurred while writing log------------------"
-                    Write-Warning $_
+                    Write-Warning "$_"
                     Write-Warning "---------------------- /Attention ------------------"
+                }
+                finally {
+                    # TODo : need help
                 }
             }
             else {
@@ -104,8 +107,11 @@ class SimplePSLogger : System.IDisposable {
                 }
                 catch {
                     Write-Warning "---------------------- Attention : error occurred while writing log------------------"
-                    Write-Warning $_
+                    Write-Warning "$_"
                     Write-Warning "---------------------- /Attention ------------------"
+                }
+                finally {
+                    #TODO : need help
                 }
             }
         }
@@ -119,7 +125,7 @@ class SimplePSLogger : System.IDisposable {
         $Level = $this.DefaultLogLevel
         $this.Log($Level, $Message)
     }
-    <#------------------------------- /Public methods : everythong is public tho :P ---------------------------------------#>
+    <#------------------------------- /Public methods : everything is public tho :P ---------------------------------------#>
 }
 
 class LoggingProvider {
@@ -204,11 +210,11 @@ function New-SimplePSLogger {
         $InformationPreference = "Continue"
 
         if (-Not $Name) {
-            if (-Not $Config["Name"]) {
+            if (-Not $Configuration["Name"]) {
                 Write-Information "SimplePSLogger name not provided, initializing instance with auto generated name : '$Name'"
                 $Name = [SimplePSLogger]::GenerateLoggerName()
             }
-            $Name = $Config["Name"]
+            $Name = $Configuration["Name"]
         }
 
         Write-Information "----------------- Initializing SimpleLogger instance with name '$Name' ----------------------`n"
@@ -225,11 +231,33 @@ function New-SimplePSLogger {
                         Enabled  = $true
                         LogLevel = "information"
                     }
+                    File    = @{
+                        Enabled = $true
+                    }
                 }
             }
         }
         else {
             # TODO : will it be helpful if we enable Console provider forcefully?
+
+            if ($Configuration.Providers["Console"]) {
+                $Configuration.Providers.Console["Enabled"] = $true
+            }
+            else {
+                $Configuration.Providers["Console"] = @{
+                    Enabled = $true
+                }
+            }
+
+            if ($Configuration.Providers["File"]) {
+                $Configuration.Providers.Console["File"] = $true
+            }
+            else {
+                $Configuration.Providers["File"] = @{
+                    Enabled = $true
+                }
+            }
+
         }
         $NestedProviders = $((Get-Module SimplePSLogger).NestedModules)
         if ($NestedProviders.Count -le 0) {
