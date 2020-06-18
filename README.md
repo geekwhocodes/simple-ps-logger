@@ -1,4 +1,4 @@
-# Simple PowerShell Logger Module
+# <img src="./logo.svg" alt="spsl" width="40" height="40"/> Simple PowerShell Logger Module
 ![](https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square) [![Docs][DocsImg]][DocsUrl]
 ![](https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square)
 
