@@ -82,7 +82,7 @@ $MyLogger.Dispose()
 | error       | for error messages       |
 | critical    | for critical messages    |
 
-### Build in Providers
+### Built in Providers
 | Provider                                                                                                | Description                                                                                                                                              | Docs                                                                         |
 | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Console                                                                                                 | Simply outputs logs to console                                                                                                                           | [Link](https://spsl.geekwhocodes.me/providers/simplepslogger.console)        |
