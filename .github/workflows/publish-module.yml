@@ -1,12 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Publish Module
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  push:
-    branches: [master]
+  pull_request:
+    branches:
+      - master
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,16 +21,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Test pwsh
-        run: Write-Host "write to host test"
-        shell: pwsh
-
       # Runs a set of commands using the runners shell
       - name: Publish module to PS Gallery
         run: |
           try{
-              Publish-Module -Path ./SimplePSLogger -NuGetApiKey ${{ secrets.PSG }} -ProjectUri "https://github.com/geekwhocodes/simple-ps-logger" -Tags "powershell, powershellcore, logging, logger, simplelogging, simplelogger,  pscore, log" -LicenseUri "https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE"
+              ./.build/Publish.ps1 -NuGetApiKey ${{ secrets.PSG }} -ErrorAction Continue
           }
           catch{
             Write-Error $_
