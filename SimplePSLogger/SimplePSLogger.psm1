@@ -2,7 +2,7 @@
 class SimplePSLogger : System.IDisposable {
     
     # Create with providers
-    SimplePSLogger([string]$Name, [System.Collections.ArrayList]$LoggingProviders) {
+    SimplePSLogger([string]$Name, [LoggingProvider[]]$LoggingProviders) {
         $this.Name = $Name
         $this.AddLoggingProviders($LoggingProviders)
         Write-Information "Total logging providers registered - $($this.LoggingProviders.Count) "
@@ -16,7 +16,7 @@ class SimplePSLogger : System.IDisposable {
     hidden [hashtable] $LogLevels = [ordered]@{"verbose" = 0; "debug" = 1; "information" = 2; "warning" = 3; "error" = 4; "critical" = 5; "none" = 6 }
     <#------------------------------- Members Variables ----------------------------------#>
     
-    hidden static [object] CreateLogger($Name, [System.Collections.ArrayList]$LoggingProviders) {
+    hidden static [object] CreateLogger($Name, [LoggingProvider[]]$LoggingProviders) {
         if (-Not $Name) {
             throw "Cannot create logger without 'name'"
         }
@@ -34,8 +34,7 @@ class SimplePSLogger : System.IDisposable {
 
     hidden [string] GetLogLevel($level) {
         # TODO : optimize it later
-        $c = ("verbose", "debug", "information", "warning", "error", "critical", "none").Contains($level)
-        if (-Not $c) {
+        if (-Not $this.LogLevels[$level]) {
             Write-Information "Log level '$level' not supported, defaulting to '$this.DefaultLogLevel'"
             $level = $this.DefaultLogLevel
         }
@@ -50,8 +49,12 @@ class SimplePSLogger : System.IDisposable {
         return $this.LogLevels[$ConfugeredLevel] -le $this.LogLevels[$Level]
     }
 
-    hidden [void] AddLoggingProviders([object[]]$loggers) {
+    hidden [void] AddLoggingProviders([LoggingProvider[]]$loggers) {
         foreach ($logger in $loggers) {
+            $d = $logger.GetType()
+            if ($logger.GetType() -ne [LoggingProvider]) {
+                throw [InvalidCastException]::new()
+            }
             $this.LoggingProviders.Add($logger)
         }
     }
@@ -136,7 +139,11 @@ class LoggingProvider {
             throw "Logging provider name is required"
         }
         if (-Not $function) {
-            throw "logging provider function is required"
+            throw "Logging provider function is required"
+        }
+        #TODO : validate function type
+        if ($($function.GetType()) -ne [scriptblock]) {
+            throw "Logging provider's function should be ScriptBlock"
         }
         if (-Not $config) {
             Write-Information "Configurations not provided for '$name' provider or it does not need any configurations."
@@ -210,11 +217,16 @@ function New-SimplePSLogger {
         $InformationPreference = "Continue"
 
         if (-Not $Name) {
-            if (-Not $Configuration["Name"]) {
-                Write-Information "SimplePSLogger name not provided, initializing instance with auto generated name : '$Name'"
-                $Name = [SimplePSLogger]::GenerateLoggerName()
+            if ($null -ne $Configuration) {
+                if (-Not $Configuration["Name"]) {
+                    Write-Information "SimplePSLogger name not provided, initializing instance with auto generated name : '$Name'"
+                    $Name = [SimplePSLogger]::GenerateLoggerName()
+                }
+                $Name = $Configuration["Name"]
             }
-            $Name = $Configuration["Name"]
+            else {
+                $Name = [guid]::NewGuid()
+            }
         }
 
         Write-Information "----------------- Initializing SimpleLogger instance with name '$Name' ----------------------`n"
@@ -261,7 +273,7 @@ function New-SimplePSLogger {
         }
         $NestedProviders = $((Get-Module SimplePSLogger).NestedModules)
         if ($NestedProviders.Count -le 0) {
-            Write-Error "Zero logging provider registred, there is no use of SimplePSLogger with logging providers. Exiting..."
+            Write-Error "Zero logging provider registred, there is no use of SimplePSLogger with logging providers."
         }
         $Loggers = [System.Collections.ArrayList]@()
         foreach ($provider in $NestedProviders) {
@@ -289,4 +301,4 @@ function New-SimplePSLogger {
     }
 }
 
-Export-ModuleMember -Function New-SimplePSLogger -Alias New-SPSL
+Export-ModuleMember -Function New-SimplePSLogger
