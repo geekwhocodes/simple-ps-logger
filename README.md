@@ -1,4 +1,5 @@
 # <img src="./logo.svg" alt="spsl" width="40" height="40"/> Simple PowerShell Logger Module
+[![Build Status][AzBuildImg]][AzBuildUrl] [![Test Result][AzTestsImg]][AzTestsUrl] [![Code Factor][CodeFactImg]][CodeFactUrl]
 ![](https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square) [![Docs][DocsImg]][DocsUrl]
 ![](https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square)
 
@@ -112,3 +113,12 @@ If there is a feature you would like to see  in SimplePSLogger file an issue on 
 
 [DocsImg]: https://img.shields.io/github/deployments/geekwhocodes/Simple-PS-Logger/github-pages?label=docs&style=flat-square
 [DocsUrl]: https://spsl.geekwhocodes.me/
+
+[AzBuildImg]: https://img.shields.io/azure-devops/build/geekwhocodes/SimplePSLogger/11?label=azure%20build%20pipeline%20&style=flat-square
+[AzBuildUrl]: https://dev.azure.com/geekwhocodes/SimplePSLogger
+
+[AzTestsImg]: https://img.shields.io/azure-devops/tests/geekwhocodes/SimplePSLogger/11?style=flat-square
+[AzTestsUrl]: https://dev.azure.com/geekwhocodes/SimplePSLogger
+
+[CodeFactImg]: https://img.shields.io/codefactor/grade/github/geekwhocodes/simple-ps-logger?style=flat-square
+[CodeFactUrl]: https://www.codefactor.io/repository/github/geekwhocodes/simple-ps-logger

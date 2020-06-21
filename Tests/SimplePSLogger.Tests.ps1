@@ -114,7 +114,7 @@ Describe "LoggingProvider Class: Create" {
 
     It "When we don't pass name, throws 'Logging provider name is required'" {
         try {
-            $funcBlock = [scriptblock]::Create( { Write-Host "Hi.." })
+            $funcBlock = [scriptblock]::Create( { Write-Output "Hi.." })
             [LoggingProvider]::Create($null, $funcBlock , @{})
         }
         catch {
@@ -148,7 +148,7 @@ Describe "LoggingProvider Class: Create" {
     {
         param ($Name, $Expected)
         
-        $funcBlock = [scriptblock]::Create( { Write-Host "Hi.." })
+        $funcBlock = [scriptblock]::Create( { Write-Output "Hi.." })
         $LoggingProviderInstance = [LoggingProvider]::Create($Name, $funcBlock, @{})
         $LoggingProviderInstance.Name | Should -Be $Expected
     }

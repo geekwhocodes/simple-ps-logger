@@ -41,7 +41,7 @@ if (-not @($FilesToSign)) {
 
 $results = $FilesToSign | ForEach-Object {
     $Signed = Set-AuthenticodeSignature $_ -Certificate $cert -TimestampServer 'http://timestamp.comodoca.com/authenticode' -ErrorAction Stop
-    $Signed | Out-String | Write-Host
+    $Signed | Out-String | Write-Output
     $Signed
 }
 
