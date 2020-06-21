@@ -114,11 +114,11 @@ If there is a feature you would like to see  in SimplePSLogger file an issue on 
 [DocsImg]: https://img.shields.io/github/deployments/geekwhocodes/Simple-PS-Logger/github-pages?label=docs&style=flat-square
 [DocsUrl]: https://spsl.geekwhocodes.me/
 
-[AzBuildImg]: https://img.shields.io/azure-devops/build/geekwhocodes/SimplePSLogger/11?label=azure%20build%20pipeline%20&style=flat-square
-[AzBuildUrl]: https://dev.azure.com/geekwhocodes/SimplePSLogger
+[AzBuildImg]: https://img.shields.io/azure-devops/build/geekwhocodes/simple-ps-logger/12/master?style=flat-square
+[AzBuildUrl]: https://dev.azure.com/geekwhocodes/simple-ps-logger
 
-[AzTestsImg]: https://img.shields.io/azure-devops/tests/geekwhocodes/SimplePSLogger/11?style=flat-square
-[AzTestsUrl]: https://dev.azure.com/geekwhocodes/SimplePSLogger
+[AzTestsImg]: https://img.shields.io/azure-devops/tests/geekwhocodes/simple-ps-logger/12?style=flat-square
+[AzTestsUrl]: https://dev.azure.com/geekwhocodes/simple-ps-logger
 
 [CodeFactImg]: https://img.shields.io/codefactor/grade/github/geekwhocodes/simple-ps-logger?style=flat-square
 [CodeFactUrl]: https://www.codefactor.io/repository/github/geekwhocodes/simple-ps-logger
