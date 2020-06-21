@@ -1,7 +1,7 @@
 Write-Output "Adding SimplePSLogger path to PSModulePath"
 #Check If Path is already there
 $SimplePSLoggerPath = Get-Location
-$CurrentPaths = $env:Psmodulepath.Split([IO.Path]::PathSeparator)
+$CurrentPaths = $env:PSModulePath.Split([IO.Path]::PathSeparator)
 if ($CurrentPaths.Contains($SimplePSLoggerPath.Path.ToString())) {
     Write-Output "SimplePSLogger path is already present in PowerShell module path. Yay!"
     return
