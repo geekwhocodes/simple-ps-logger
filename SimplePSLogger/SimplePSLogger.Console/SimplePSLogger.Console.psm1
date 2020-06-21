@@ -50,7 +50,6 @@ function New-Console-Logger {
         'warning' { Write-Warning $logMessage; break }
         'critical' { Write-Error $logMessage; break }
         Default {
-            Write-Host "default switch"
             Write-Information $logMessage
         }
     }
