@@ -1,0 +1,66 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: "SimplePSLogger"
+
+trigger:
+  - master
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - task: PowerShell@2
+            inputs:
+              filePath: "./.build/build.ps1"
+              pwsh: true
+          - publish: $(Build.SourcesDirectory)
+            artifact: all
+  - stage: Test
+    jobs:
+      - job: Test
+        steps:
+          - checkout: none
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: "current"
+              artifactName: "all"
+              targetPath: "$(Build.SourcesDirectory)"
+          - task: PowerShell@2
+            inputs:
+              targetType: filePath
+              filePath: "$(Build.SourcesDirectory)/dev-setup.ps1"
+              pwsh: true
+          #TODO: Add PSScriptAnalyser
+          - task: Pester.PesterRunner.Pester-Task.Pester@10
+            inputs:
+              scriptFolder: "$(Build.SourcesDirectory)/*"
+              resultsFile: "$(Build.SourcesDirectory)/SimplePSLogger.Tests.XML"
+              usePSCore: true
+              run32Bit: False
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: "NUnit"
+              testResultsFiles: "$(Build.SourcesDirectory)/SimplePSLogger.Tests.XML"
+              failTaskOnFailedTests: true
+  - stage: Deploy
+    jobs:
+      - job: PSGallery
+        steps:
+          - checkout: none
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: "current"
+              artifactName: "all"
+              targetPath: "$(Build.SourcesDirectory)"
+          - task: PowerShell@2
+            inputs:
+              targetType: inline
+              script: Write-Host "Code sign"
+              pwsh: true
