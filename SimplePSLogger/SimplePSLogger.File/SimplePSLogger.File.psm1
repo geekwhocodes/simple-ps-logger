@@ -43,9 +43,8 @@ function New-File-Logger {
         $Config
     )
 
-    $Message = ' ' * 2 + $Message
-
-    $logMessage = "[$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt"))] [$Name] [$($Level)]: $($Message)"
+    
+    $logMessage = "$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt")) $Name $($Level) $($Message.Trim())"
     
     <#  
         TODO : Robust error handling and config validation
