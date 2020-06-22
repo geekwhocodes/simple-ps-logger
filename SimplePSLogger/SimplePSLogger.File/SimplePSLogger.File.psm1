@@ -43,16 +43,15 @@ function New-File-Logger {
         $Config
     )
 
-    $Message = ' ' * 2 + $Message
-
-    $logMessage = "[$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt"))] [$Name] [$($Level)]: $($Message)"
+    
+    $logMessage = "$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt")) $Name $($Level) $($Message.Trim())"
     
     <#  
         TODO : Robust error handling and config validation
     #>
     if (-Not $Config -or -Not $($Config["LiteralFilePath"])) {
         $filePath = Join-Path $([system.io.path]::GetTempPath()) -ChildPath "$Name.log"
-        Write-Warning "File provider does not have LiteralfilePath configured, switching to auto generated file here $filepath"
+        Write-Verbose "File provider does not have LiteralfilePath configured, switching to auto generated file here $filepath"
     }
     else {
         $filePath = $($Config["LiteralFilePath"])

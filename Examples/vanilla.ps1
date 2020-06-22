@@ -25,6 +25,28 @@ $objectLog = @{
             "ewkfh" = "srkguhdg"
         }
     }
+    "k5" = "dsfjlijoiefoiuowfwuoewf"
+    "kg" = $obj
+    "kh" = @{
+        "k3.k1" = "''ef\ferthew\gkuhweg/qwrqw"
+        "k3.k2" = @{
+            "ewkfh" = "srkguhdg"
+        }
+    }
+    "df" = "dsfjlijoiefoiuowfwuoewf"
+    "j2" = $obj
+    "l3" = @{
+        "k3.k1" = "''ef\ferthew\gkuhweg/qwrqw"
+        "k3.k2" = @{
+            "ewkfh" = "srkguhdg"
+        }
+        "kh"    = @{
+            "k3.k1" = "''ef\ferthew\gkuhweg/qwrqw"
+            "k3.k2" = @{
+                "ewkfh" = "srkguhdg"
+            }
+        }
+    }
 }
 
 $MyLogger.Log($objectLog)

@@ -32,25 +32,66 @@ function New-Console-Logger {
         [string]
         $Level,
         [Parameter(Mandatory = $true, HelpMessage = "Log message")]
-        [object]
+        [string]
         $Message
     )
-    $Message = ' ' * 2 + $Message
-    $logMessage = "[$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt"))] [$Name] [$($Level)]: $($Message) `r"
+    
+    $logMessage = "$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt")) $Name $($Level): $($Message.Trim())"
 
-    $VerbosePreference = "Continue"
-    $DebugPreference = "Continue"
     $InformationPreference = "Continue"
 
+    <# I don't like prepended WARNING, IFORMATION etc by powershell
+    # Reference - https://devblogs.microsoft.com/scripting/weekend-scripter-customize-powershell-title-and-prompt/
+    # TODO : refactor 
+    #>
     switch -Exact ($Level) {
-        'verbose' { Write-Verbose $logMessage; break }
-        'debug' { Write-Debug $logMessage; break }
-        'information' { Write-Information $logMessage; break }
-        'error' { Write-Error $logMessage; break }
-        'warning' { Write-Warning $logMessage; break }
-        'critical' { Write-Error $logMessage; break }
-        Default {
+        'verbose' {
+            $prevColor = $host.ui.RawUI.ForegroundColor
+            $host.ui.RawUI.ForegroundColor = "White"
             Write-Information $logMessage
+            $host.ui.RawUI.ForegroundColor = $prevColor
+            break
+        }
+        'debug' { 
+            $prevColor = $host.ui.RawUI.ForegroundColor
+            $host.ui.RawUI.ForegroundColor = "White"
+            Write-Information $logMessage
+            $host.ui.RawUI.ForegroundColor = $prevColor
+            break
+        }
+        'information' { 
+            $prevColor = $host.ui.RawUI.ForegroundColor
+            $host.ui.RawUI.ForegroundColor = "Cyan"
+            Write-Information $logMessage
+            $host.ui.RawUI.ForegroundColor = $prevColor
+            break
+        }
+        'error' { 
+            $prevColor = $host.ui.RawUI.ForegroundColor
+            $host.ui.RawUI.ForegroundColor = "Red"
+            Write-Information $logMessage
+            $host.ui.RawUI.ForegroundColor = $prevColor
+            break
+        }
+        'warning' { 
+            $prevColor = $host.ui.RawUI.ForegroundColor
+            $host.ui.RawUI.ForegroundColor = "Yellow"
+            Write-Information $logMessage
+            $host.ui.RawUI.ForegroundColor = $prevColor
+            break
+        }
+        'critical' { 
+            $prevColor = $host.ui.RawUI.ForegroundColor
+            $host.ui.RawUI.ForegroundColor = "DarkRed"
+            Write-Information $logMessage
+            $host.ui.RawUI.ForegroundColor = $prevColor
+            break
+        }
+        Default {
+            $prevColor = $host.ui.RawUI.ForegroundColor
+            $host.ui.RawUI.ForegroundColor = "Cyan"
+            Write-Information $logMessage
+            $host.ui.RawUI.ForegroundColor = $prevColor
         }
     }
 }
