@@ -92,3 +92,4 @@ test/tools/Modules/SelfSignedCertificate/
 **/**/*.log
 Examples/Rest.ps1
 .vscode/spellright.dict
+Examples/play.ps1
