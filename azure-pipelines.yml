@@ -6,7 +6,17 @@
 name: "SimplePSLogger"
 
 trigger:
-  - master
+  branches:
+    include:
+      - master
+    exclude:
+      - "*"
+pr:
+  branches:
+    include:
+      - master
+    exclude:
+      - "*"
 
 pool:
   vmImage: "ubuntu-latest"
