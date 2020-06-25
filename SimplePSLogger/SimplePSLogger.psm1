@@ -172,7 +172,6 @@ class SimplePSLogger : System.IDisposable {
             throw "Provider module/function is recognized as name of cmdlet, please make sure that your provider is available"
         }
         catch {
-            Write-Error "Unexpected error occurred while registeting your provider."
             throw $_.Exception.Message
         }
     } 
