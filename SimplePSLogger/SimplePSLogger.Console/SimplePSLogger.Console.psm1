@@ -48,49 +48,49 @@ function New-Console-Logger {
         'verbose' {
             $prevColor = $host.ui.RawUI.ForegroundColor
             $host.ui.RawUI.ForegroundColor = "White"
-            Write-Information $logMessage
+            Write-Information "$logMessage" -InformationAction Continue
             $host.ui.RawUI.ForegroundColor = $prevColor
             break
         }
         'debug' { 
             $prevColor = $host.ui.RawUI.ForegroundColor
             $host.ui.RawUI.ForegroundColor = "White"
-            Write-Information $logMessage
+            Write-Information "$logMessage" -InformationAction Continue
             $host.ui.RawUI.ForegroundColor = $prevColor
             break
         }
         'information' { 
             $prevColor = $host.ui.RawUI.ForegroundColor
             $host.ui.RawUI.ForegroundColor = "Cyan"
-            Write-Information $logMessage
+            Write-Information "$logMessage" -InformationAction Continue
             $host.ui.RawUI.ForegroundColor = $prevColor
             break
         }
         'error' { 
             $prevColor = $host.ui.RawUI.ForegroundColor
             $host.ui.RawUI.ForegroundColor = "Red"
-            Write-Information $logMessage
+            Write-Information "$logMessage" -InformationAction Continue
             $host.ui.RawUI.ForegroundColor = $prevColor
             break
         }
         'warning' { 
             $prevColor = $host.ui.RawUI.ForegroundColor
             $host.ui.RawUI.ForegroundColor = "Yellow"
-            Write-Information $logMessage
+            Write-Information "$logMessage" -InformationAction Continue
             $host.ui.RawUI.ForegroundColor = $prevColor
             break
         }
         'critical' { 
             $prevColor = $host.ui.RawUI.ForegroundColor
             $host.ui.RawUI.ForegroundColor = "DarkRed"
-            Write-Information $logMessage
+            Write-Information "$logMessage" -InformationAction Continue
             $host.ui.RawUI.ForegroundColor = $prevColor
             break
         }
         Default {
             $prevColor = $host.ui.RawUI.ForegroundColor
             $host.ui.RawUI.ForegroundColor = "Cyan"
-            Write-Information $logMessage
+            Write-Information "$logMessage" -InformationAction Continue
             $host.ui.RawUI.ForegroundColor = $prevColor
         }
     }
