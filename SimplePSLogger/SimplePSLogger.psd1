@@ -17,7 +17,7 @@
 
     Author            = 'Ganesh Raskar'
     Copyright         = '2019 Ganesh Raskar. All rights reserved.'
-    Description       = 'Simple logging module for PowerShell, It is build for simplicity and usability.'
+    Description       = 'Simple logging module for PowerShell, built for simplicity and usability.'
     PowerShellVersion = '5.1.1'
 
     FunctionsToExport = @(
