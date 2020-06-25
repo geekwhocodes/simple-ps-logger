@@ -1,6 +1,7 @@
 using Module SimplePSLogger
 Get-Module SimplePSLogger | Remove-Module -Force
 Import-Module -Name $pwd\SimplePSLogger\SimplePSLogger.psd1 -Force
+Import-Module -Name $pwd\Tests\ExternalLoggingProvider\ExternalLoggingProvider.psm1
 
 Describe "New-SimplePSLogger" {
 
@@ -85,9 +86,8 @@ Describe "SimplePSLogger Class" {
             
             $LoggerInstance = [SimplePSLogger]::CreateLogger($Name)
             $LoggerInstance.Name | Should -Be $Expected
-        } 
+        }
     }
-
     Context "Internal memebers and methods" {
         It "Gives '<Name>', it returns '<Expected>'" -TestCases @(
             @{Name = "SPSL"; Expected = "SPSL" }
@@ -106,6 +106,53 @@ Describe "SimplePSLogger Class" {
             $LoggerInstance = [SimplePSLogger]::new("SPSl", $Providers)
             $LoggerInstance.LoggingProviders.Count | Should -Be $($Expected.Length)
         }
+    }
+    Context "Custome Provider Registration" {
+        It "When we don't pass provider name, it should throw" {
+            try {
+                $LoggerInstance = [SimplePSLogger]::CreateLogger("Test-Provider", @())
+                $LoggerInstance.RegisterProvider($null, "Write-MockLog", @{})
+            }
+            catch {
+                $PSItem.Exception | Should -Not -Be $null
+                $PSItem.Exception.Message | Should -BeExactly "Provider name is required"
+            }
+        }
+
+        It "When we don't pass provider function name, it should throw" {
+            try {
+                $LoggerInstance = [SimplePSLogger]::CreateLogger("Test-Provider", @())
+                $LoggerInstance.RegisterProvider("AwesomeProvider", $null, @{})
+            }
+            catch {
+                $PSItem.Exception | Should -Not -Be $null
+                $PSItem.Exception.Message | Should -BeExactly "Provider function name is required"
+            }
+        }
+
+        It "When we don't pass correct provider function name, it should throw" {
+            try {
+                $LoggerInstance = [SimplePSLogger]::CreateLogger("Test-Provider", @())
+                $LoggerInstance.RegisterProvider("AwesomeProvider", "ABCD", @{})
+            }
+            catch {
+                $PSItem.Exception | Should -Not -Be $null
+                $PSItem.Exception.Message | Should -BeExactly "Provider module/function is recognized as name of cmdlet, please make sure that your provider is available"
+            }
+        }
+
+        It "When we pass correct provider , it should not throw" {
+            #Mock -ModuleName ExternalLoggingProvider AwesomeLoggingProvider { Write-Information "Log" -InformationAction Continue }
+            try {
+                $LoggerInstance = [SimplePSLogger]::CreateLogger("Test-Provider", @())
+                $LoggerInstance.RegisterProvider("AwesomeProvider", "AwesomeLoggingProvider", @{})
+            }
+            catch {
+                $PSItem.Exception | Should -Not -Be $null
+                $PSItem.Exception.Message | Should -BeExactly "Provider module/function is recognized as name of cmdlet, please make sure that your provider is available"
+            }
+        }
+        
     }
 }
 

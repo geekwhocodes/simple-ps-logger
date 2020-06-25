@@ -5,8 +5,8 @@ class SimplePSLogger : System.IDisposable {
     SimplePSLogger([string]$Name, [LoggingProvider[]]$LoggingProviders) {
         $this.Name = $Name
         $this.AddLoggingProviders($LoggingProviders)
-        Write-Information "Total logging providers registered - $($this.LoggingProviders.Count) "
-        Write-Information "`n----------------- SimpleLogger instance initialized with name '$Name' ---------------------- `n"
+        Write-Information "Logging providers registered - $($this.LoggingProviders.Count)" -InformationAction Continue
+        Write-Information "$([Environment]::NewLine)----------------- SimpleLogger instance initialized with name '$Name' ---------------------- $([Environment]::NewLine)" -InformationAction Continue
     }
 
     <#------------------------------- Members Variables ----------------------------------#>
@@ -35,7 +35,7 @@ class SimplePSLogger : System.IDisposable {
     hidden [string] GetLogLevel($level) {
         # TODO : optimize it later
         if (-Not $this.LogLevels[$level]) {
-            Write-Information "Log level '$level' not supported, defaulting to '$this.DefaultLogLevel'"
+            Write-Information "Log level '$level' not supported, defaulting to '$this.DefaultLogLevel'" -InformationAction Continue
             $level = $this.DefaultLogLevel
         }
         return $level
@@ -51,7 +51,6 @@ class SimplePSLogger : System.IDisposable {
 
     hidden [void] AddLoggingProviders([LoggingProvider[]]$loggers) {
         foreach ($logger in $loggers) {
-            $d = $logger.GetType()
             if ($logger.GetType() -ne [LoggingProvider]) {
                 throw [InvalidCastException]::new()
             }
@@ -61,7 +60,7 @@ class SimplePSLogger : System.IDisposable {
 
     # TODO : need more information.
     [void] Dispose() {
-        Write-Warning "$($this.Name) SimplePSLogger disposed"
+        Write-Warning "$($this.Name) SimplePSLogger disposed" -WarningAction Continue
     }
 
     <#------------------------------- /Internals ---------------------------------------#>
@@ -79,22 +78,21 @@ class SimplePSLogger : System.IDisposable {
         }
 
         if ($this.LoggingProviders.Count -le 0) {
-            Write-Information "Zero logging providers registered."
+            Write-Information "Zero logging providers registered." -InformationAction Continue
         }
 
         foreach ($logger in $this.LoggingProviders) {
-            Write-Information "Writing using logger - $($logger.Name)"
+            Write-Verbose "Writing using logger - $($logger.Name)"
             if (-Not $logger.Config) {
                 try {
-                    # TODO : ShouldLog?
                     if ($this.ShouldLog($this.DefaultLogLevel, $Level)) {
                         Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message -ErrorAction Continue   
                     }
                 }
                 catch {
-                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
-                    Write-Warning "$_"
-                    Write-Warning "---------------------- /Attention ------------------"
+                    Write-Warning "---------------------- Attention : error occurred while writing log------------------" -WarningAction Continue
+                    Write-Warning "$_" -WarningAction Continue
+                    Write-Warning "---------------------- /Attention ------------------" -WarningAction Continue
                 }
                 finally {
                     # TODo : need help
@@ -102,16 +100,15 @@ class SimplePSLogger : System.IDisposable {
             }
             else {
                 try {
-                    #TODO : ShouldLog?
                     $UserProvidedLogLevel = if (-Not $logger.Config["LogLevel"]) { $this.DefaultLogLevel }else { $logger.Config["LogLevel"] }
                     if ($this.ShouldLog($UserProvidedLogLevel, $Level)) {
                         Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message, ($logger.Config) -ErrorAction Continue
                     }
                 }
                 catch {
-                    Write-Warning "---------------------- Attention : error occurred while writing log------------------"
-                    Write-Warning "$_"
-                    Write-Warning "---------------------- /Attention ------------------"
+                    Write-Warning "---------------------- Attention : error occurred while writing log------------------" -WarningAction Continue
+                    Write-Warning "$_" -WarningAction Continue
+                    Write-Warning "---------------------- /Attention ------------------" -WarningAction Continue
                 }
                 finally {
                     #TODO : need help
@@ -128,13 +125,64 @@ class SimplePSLogger : System.IDisposable {
         $Level = $this.DefaultLogLevel
         $this.Log($Level, $Message)
     }
+
+    <#
+        .SYNOPSIS
+        Register your custom logging provider
+        .DESCRIPTION
+            Use this method of [SimplePSLogger] to register your custom logging provider. 
+            Make sure that your custom logging script/module/function is available before registering.
+            
+        .PARAMETER Name
+            Name of your logging provider
+        .PARAMETER ProviderFunctionName
+            Powershell function name of your provider
+
+        .PARAMETER Configuration
+            Configuratoin object needed for your logging provider
+            Example configuration object :
+            $config = @{
+                Enabled  = $true
+                LogLevel = "information"
+                Authkey  = "key"
+            }
+        
+        .EXAMPLE
+            $myLogger = New-SimplePSLogger -Name "mylogger"
+            $myLogger.RegisterProvider("myAwesomeProvider", "New-MyAwesomeProvider-Logger", $config)
+        .NOTES
+            Make sure that "New-MyAwesomeProvider-Logger" function and it's dependencies are imported/initialized before registering your provider
+    #>
+    [void] RegisterProvider($Name, $ProviderFunctionName, $Configuration) {
+        try {
+            Write-Information "$([Environment]::NewLine)----------------- SimpleLogger - Registering Custom Provider ---------------------- $([Environment]::NewLine)" -InformationAction Continue 
+            if (-Not $Name) {
+                throw "Provider name is required"
+            }
+            if (-Not $ProviderFunctionName) {
+                throw "Provider function name is required"
+            }
+            Get-Command -Name $ProviderFunctionName -ErrorAction Stop
+            $ProviderFunctionCode = [scriptblock]::Create($().Definition)
+            $ProviderLogger = [LoggingProvider]::Create($Name, $ProviderFunctionCode, $Configuration)
+            $this.AddLoggingProviders($ProviderLogger)
+            Write-Information "$([Environment]::NewLine)----------------- SimpleLogger - Registering Custom Provider ---------------------- $([Environment]::NewLine)" -InformationAction Continue
+        }
+        catch [System.Management.Automation.CommandNotFoundException] {
+            throw "Provider module/function is recognized as name of cmdlet, please make sure that your provider is available"
+        }
+        catch {
+            throw $_.Exception.Message
+        }
+    } 
+
     <#------------------------------- /Public methods : everything is public tho :P ---------------------------------------#>
 }
 
 class LoggingProvider {
 
     hidden LoggingProvider($name, $function, $config) {
-        Write-Information "Registering '$name' provider"
+        Write-Information "Registering '$name' provider" -InformationAction Continue
         if (-Not $name) {
             throw "Logging provider name is required"
         }
@@ -146,12 +194,12 @@ class LoggingProvider {
             throw "Logging provider's function should be ScriptBlock"
         }
         if (-Not $config) {
-            Write-Information "Configurations not provided for '$name' provider or it does not need any configurations."
+            Write-Information "Configurations not provided for '$name' provider or it does not need any configurations." -InformationAction Continue
         }
         $this.Config = $config
         $this.Name = $name
         $this.Function = $function
-        Write-Information "Registered '$name' provider"
+        Write-Information "Registered '$name' provider" -InformationAction Continue
     }
 
     hidden static [LoggingProvider] Create($name, $function, $config) {
@@ -165,8 +213,7 @@ class LoggingProvider {
 
 <#
 .SYNOPSIS
-   rUseutLLc)eateLnswLSis$mrs)mos)po inseLncg
-  ee$Loggers)$Loggers)
+   Create new SimplePSLogger instance
 .DESCRIPTION
     You can create multiple loggers for one action but we recommend creating one single logger for your action
     SimplePSLogger logger automatically registers x loggers.
@@ -176,7 +223,6 @@ class LoggingProvider {
     SimplePSLogger name which is used to identify current logger instnace
     Examples : your script name, unique task name etc. 
     It will help you to analyze logs
-    TODO: Add more details
 
 .PARAMETER Configuration
     SimplePSLogger configuratoin object, this will contain configurations for supported/reistred providers
@@ -193,7 +239,6 @@ class LoggingProvider {
     }
 
 .EXAMPLE
-    TODO : Add examples
     $myLogger = New-SimplePSLogger -Name "action-1234"
     $myLogger.Log('level', 'log message')
     $myLogger.Dispose()
@@ -214,12 +259,10 @@ function New-SimplePSLogger {
     )
 
     try {
-        $InformationPreference = "Continue"
-
         if (-Not $Name) {
             if ($null -ne $Configuration) {
                 if (-Not $Configuration["Name"]) {
-                    Write-Information "SimplePSLogger name not provided, initializing instance with auto generated name : '$Name'"
+                    Write-Information "SimplePSLogger name not provided, initializing instance with auto generated name : '$Name'" -InformationAction Continue
                     $Name = [SimplePSLogger]::GenerateLoggerName()
                 }
                 $Name = $Configuration["Name"]
@@ -229,29 +272,25 @@ function New-SimplePSLogger {
             }
         }
 
-        Write-Information "----------------- Initializing SimpleLogger instance with name '$Name' ----------------------`n"
+        Write-Information "----------------- Initializing SimpleLogger instance with name '$Name' ----------------------`n" -InformationAction Continue
 
         <#  NOTE : We can merge User provided with default configurations but 
             merging deep hastables is complicated and expensive. 
         #>
         if (-Not $Configuration) {
             #TODO : Create and read default config file. 
-            Write-Warning "Configuration not provided, all providers will get configured without configurations(Not recommended)"
+            Write-Warning "Configuration not provided, all providers will get configured without configurations(Not recommended)" -WarningAction Continue
             $Configuration = @{
                 Providers = @{
                     Console = @{
                         Enabled  = $true
                         LogLevel = "information"
                     }
-                    File    = @{
-                        Enabled = $true
-                    }
                 }
             }
         }
         else {
             # TODO : will it be helpful if we enable Console provider forcefully?
-
             if ($Configuration.Providers["Console"]) {
                 $Configuration.Providers.Console["Enabled"] = $true
             }
@@ -260,20 +299,10 @@ function New-SimplePSLogger {
                     Enabled = $true
                 }
             }
-
-            if ($Configuration.Providers["File"]) {
-                $Configuration.Providers.Console["File"] = $true
-            }
-            else {
-                $Configuration.Providers["File"] = @{
-                    Enabled = $true
-                }
-            }
-
         }
         $NestedProviders = $((Get-Module SimplePSLogger).NestedModules)
         if ($NestedProviders.Count -le 0) {
-            Write-Error "Zero logging provider registred, there is no use of SimplePSLogger with logging providers."
+            Write-Error "Zero logging provider registred, there is no use of SimplePSLogger with logging providers." -ErrorAction Continue
         }
         $Loggers = [System.Collections.ArrayList]@()
         foreach ($provider in $NestedProviders) {
@@ -284,7 +313,7 @@ function New-SimplePSLogger {
             if ($ProviderSectionConfig -and $ProviderSectionConfig["Enabled"]) {
                 $ProviderFunctionName = "New-$ProviderSectionName-Logger"
                 if (-Not $($provider.ExportedCommands.Keys.Contains($ProviderFunctionName))) {
-                    Write-Information "$($provider.Name) does not have module member exposed in 'New-YuorLoogerName-Logger' format"
+                    Write-Information "$($provider.Name) does not have module member exposed in 'New-YuorLoogerName-Logger' format" -InformationAction Continue
                 }
                 else {
                     $ProviderFunctionCode = [scriptblock]::Create($(Get-Command $ProviderFunctionName).Definition)
@@ -294,7 +323,9 @@ function New-SimplePSLogger {
                 }
             }            
         }
-        return [SimplePSLogger]::CreateLogger($Name, $Loggers)
+        $logger = [SimplePSLogger]::CreateLogger($Name, $Loggers)
+        $InformationPreference = $PrevInfoPreference
+        return $logger
     }
     catch {
         throw
