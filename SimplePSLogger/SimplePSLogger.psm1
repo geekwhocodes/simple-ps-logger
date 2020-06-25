@@ -163,7 +163,7 @@ class SimplePSLogger : System.IDisposable {
                 throw "Provider function name is required"
             }
             Get-Command -Name $ProviderFunctionName -ErrorAction Stop
-            $ProviderFunctionCode = [scriptblock]::Create($().Definition)
+            $ProviderFunctionCode = [scriptblock]::Create($(Get-Command -Name $ProviderFunctionName).Definition)
             $ProviderLogger = [LoggingProvider]::Create($Name, $ProviderFunctionCode, $Configuration)
             $this.AddLoggingProviders($ProviderLogger)
             Write-Information "$([Environment]::NewLine)----------------- SimpleLogger - Registering Custom Provider ---------------------- $([Environment]::NewLine)" -InformationAction Continue
