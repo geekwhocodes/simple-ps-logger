@@ -176,8 +176,31 @@ class SimplePSLogger : System.IDisposable {
         }
     } 
 
+    <#
+        Processes remaining logs 
+    #>
+    [void] Flush() {
+        Write-Information "Flushing buffered logs of providers those support buffer." -InformationAction Continue
+        foreach ($logger in $this.LoggingProviders) {
+            if ($logger.Config -and $logger.Config["Flush"]) {
+                try {
+                    Invoke-Command $logger.Function -ArgumentList ($this.Name), "information", "flush logs", $logger.Config, $true -ErrorAction Continue
+                }
+                catch {
+                    Write-Warning "---------------------- Attention : error occurred while flushing logs of $($logger.Name) ------------------" -WarningAction Continue
+                    Write-Warning "$_" -WarningAction Continue
+                    Write-Warning "---------------------- /Attention ------------------" -WarningAction Continue
+                }
+                finally {
+                    #TODO : need help
+                }
+            }
+            
+        }
+    }
     <#------------------------------- /Public methods : everything is public tho :P ---------------------------------------#>
 }
+
 
 class LoggingProvider {
 
