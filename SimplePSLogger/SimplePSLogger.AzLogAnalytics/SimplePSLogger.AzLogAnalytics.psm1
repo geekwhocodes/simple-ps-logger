@@ -106,7 +106,11 @@ Function New-AzLogAnalytics-Logger {
         $Message,
         [Parameter(Mandatory = $false, HelpMessage = "Configuration object")]
         [object]
-        $Config
+        $Config,
+        # Flush logs to make sure all logs gets logged
+        [Parameter(Mandatory = $false)]
+        [Switch]
+        $Flush
     )
 
     # TODO : SimpleLogger will pass on current provider name(my name :P)
@@ -127,26 +131,65 @@ Function New-AzLogAnalytics-Logger {
     if (-Not $Config['LogType']) {
         $Config['LogType'] = "SimplePSLogger"
     }
-
-    <#  TODO : create buffer file and flush on buffer length match, instead of making outbound call on every .Log() call.
-    #>
-    $LogMsg = [System.Collections.ArrayList]@(@{
-            TimeStamp  = $((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt"))
-            LoggerName = $Name
-            Level      = $Level
-            Message    = $Message
-        })
-
-    $json = ConvertTo-Json -Compress -Depth 20 $LogMsg
-
-    try {
-        Send-LogAnalyticsData -customerId $Config['WorkspaceId'] -sharedKey $Config['WorkspaceKey'] -body $json -logType $Config['LogType']    
+    if (-Not $Config["BufferSize"]) {
+        $Config["BufferSize"] = 20
     }
-    catch {
-        throw
+
+    $logMessage = "$((Get-Date).ToUniversalTime().ToString("yyyy/MM/ddHH:mm:ss:fffftt"))`t$Name`t$($Level)`t$($Message.Trim())"
+
+    $bufferFileName = Join-Path $([system.io.path]::GetTempPath()) -ChildPath "$Name-az-loganalytics.log"
+    
+    if (-Not $(Test-Path -Path $bufferFileName)) {
+        New-Item $bufferFileName -ItemType file
     }
-    finally {
-        # TODO : retains logs and try agian
+
+    $currentBufferSize = Get-Content $bufferFileName | Measure-Object –Line
+    $LogsToFlush = New-Object Collections.Generic.List[Object]
+
+    if ($currentBufferSize.Lines -ge $Config["BufferSize"] -or $Flush) {
+        # in case,  someone modify file and added line
+        if (-Not $Flush) {
+            Add-Content -Path $bufferFileName -Value $logMessage
+        }
+
+        $content = Get-Content -Path $bufferFileName
+
+        foreach ($line in $content) {
+            # Help : do we need to replace `t with 'space char'? What if message contains `t char?
+            $log = $line.Split("`t")
+            if ($log.Count -gt 4 -or $log.Count -lt 4) {
+                Write-Information "Malformed log entry found. Logging entire content as log message"
+                $lineItem = New-Object -TypeName psobject
+                $lineItem | Add-Member -MemberType NoteProperty -Name Timestamp -Value $((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt"))
+                $lineItem | Add-Member -MemberType NoteProperty -Name LoggerName -Value $Name
+                $lineItem | Add-Member -MemberType NoteProperty -Name Level -Value "information"
+                $lineItem | Add-Member -MemberType NoteProperty -Name Message -Value $line
+                $LogsToFlush.Add($lineItem)
+            }
+            else {
+                $lineItem = New-Object -TypeName psobject
+                $lineItem | Add-Member -MemberType NoteProperty -Name Timestamp -Value $log[0].Trim()
+                $lineItem | Add-Member -MemberType NoteProperty -Name LoggerName -Value $log[1].Trim()
+                $lineItem | Add-Member -MemberType NoteProperty -Name Level -Value $log[2].Trim()
+                $lineItem | Add-Member -MemberType NoteProperty -Name Message -Value $log[3]
+                $LogsToFlush.Add($lineItem)
+            }
+        }
+        $payLoad = $LogsToFlush | ConvertTo-Json -Depth 20 -Compress -AsArray
+        #Flush to LAWS
+        try {
+            Send-LogAnalyticsData -customerId $Config['WorkspaceId'] -sharedKey $Config['WorkspaceKey'] -body $payLoad -logType $Config['LogType']    
+            Remove-Item -Path $bufferFileName -Force
+        }
+        catch {
+            throw
+        }
+        finally {
+            # TODO : retains logs and try agian
+        }
+    }
+    else {
+        Add-Content -Path $bufferFileName -Value $logMessage
     }
 }
 
