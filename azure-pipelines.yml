@@ -5,10 +5,6 @@
 
 name: "SimplePSLogger"
 
-trigger:
-  branches:
-    include:
-      - master
 pr:
   branches:
     include:
