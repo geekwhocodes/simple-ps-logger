@@ -1,10 +1,50 @@
-# <img src="./logo.svg" alt="spsl" width="40" height="40"/> Simple PowerShell Logger Module
-[![Build Status][AzBuildImg]][AzBuildUrl] [![Test Result][AzTestsImg]][AzTestsUrl] [![Code Factor][CodeFactImg]][CodeFactUrl]
-![](https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square) [![Docs][DocsImg]][DocsUrl]
-![](https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square)
+<a style="text-decoration:none" href="https://www.powershellgallery.com/packages/SimplePSLogger" target="_blank" rel="noopener noreferrer">
+    <h3 align="center">Simple PowerShell Logging Module</h3>
+</a>
+<p align="center">
+  <a style="text-decoration:none" href="https://www.powershellgallery.com/packages/SimplePSLogger" target="_blank" rel="noopener noreferrer">
+    <img src="./logo.svg" width="250x" alt="Simple PowerShell Logging Module logo" />
+  </a>
+</p>
+
+<p align="center">
+  <a style="text-decoration:none" href="https://dev.azure.com/geekwhocodes/simple-ps-logger">
+    <img src="https://img.shields.io/azure-devops/build/geekwhocodes/simple-ps-logger/12/master?style=flat-square" alt="Build Status" />
+  </a>
+  <a style="text-decoration:none" href="https://dev.azure.com/geekwhocodes/simple-ps-logger/_test/analytics?definitionId=12&contextType=build">
+    <img src="https://img.shields.io/azure-devops/tests/geekwhocodes/simple-ps-logger/12?style=flat-square" alt="Tests" />
+  </a>
+  <a style="text-decoration:none" href="https://www.codefactor.io/repository/github/geekwhocodes/simple-ps-logger">
+    <img src="https://img.shields.io/codefactor/grade/github/geekwhocodes/simple-ps-logger?style=flat-square" alt="Code Quality" />
+  </a>
+  
+  <img src="https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square" alt="last commit">
+  <img src="https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square" alt="license">
+</p>
+
+---
+
+- [Introduction](#introduction)
+    - [Simple powershell module is very extensible and easy use.](#simple-powershell-module-is-very-extensible-and-easy-use)
+  - [- Task Board - Board](#ullitask-board---boardliul)
+- [Modules](#modules)
+  - [Installation](#installation)
+    - [PowerShell Gallery](#powershell-gallery)
+    - [Import from Directory](#import-from-directory)
+- [Usage](#usage)
+      - [Create Logger Instance](#create-logger-instance)
+- [Supported Log Levels](#supported-log-levels)
+- [Built in Providers](#built-in-providers)
+  - [Reporting Issues and Feedback](#reporting-issues-and-feedback)
+    - [Issues](#issues)
+    - [Feedback](#feedback)
 
 
-> Supports `n` number of custom providers
+# Introduction
+
+### Simple powershell module is very extensible and easy use. 
+- Docs - [SimplePSLogger Documentation](https://spsl.geekwhocodes.me/)
+- Task Board - [Board](https://github.com/geekwhocodes/simple-ps-logger/projects/3)
 ---
 
 # Modules
@@ -36,14 +76,11 @@ Import-Module -Name drive:path\SimplePSLogger -Verbose
 Read more about importing module here [Import Module](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/import-module?view=powershell-7)
 
 
-## Docs 
+<hr/>
 
-[SimplePSLogger Documentation](https://spsl.geekwhocodes.me/)
+# Usage
 
-
-## Usage
-
-### Create Logger Instance
+#### Create Logger Instance
 
 To create new logger instance in your script [New-SimplePSLogger] cmdlet:
 
@@ -73,7 +110,10 @@ $MyLogger.Dispose()
 
 ```
 
-### Supported Log Levels 
+
+---
+
+# Supported Log Levels 
 | Level       | Description              |
 | ----------- | ------------------------ |
 | verbose     | for verbose messages     |
@@ -83,15 +123,19 @@ $MyLogger.Dispose()
 | error       | for error messages       |
 | critical    | for critical messages    |
 
-### Built in Providers
-| Provider                                                                                                | Description                                                                                                                                              | Docs                                                                         |
-| ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Console                                                                                                 | Simply outputs logs to console                                                                                                                           | [Link](https://spsl.geekwhocodes.me/providers/simplepslogger.console)        |
-| File                                                                                                    | Outputs logs to file(at this point file path is not configurable but it's on our roadmap ) logFile path is $env:Temp/SimplePSLoggerInstanceName.log      | [Link](https://spsl.geekwhocodes.me/providers/simplepslogger.file)           |
-| [Azure LogAnalytics](https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/get-started-portal) | Send logs to [Azure Log Analytics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api#record-type-and-properties)Workspace | [Link](https://spsl.geekwhocodes.me/providers/simplepslogger.azloganalytics) |
-| [Azure AppInsights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)     | Cooming soon                                                                                                                                             | Link                                                                         |
-| Rolling Log File                                                                                        | On the Roadmap                                                                                                                                           | LInk                                                                         |
+---
 
+# Built in Providers
+
+| Provider                                                                                            | Description                                | Docs                                                                                            |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| Console                                                                                             | Outputs logs to console                    | [Console Provider](https://spsl.geekwhocodes.me/providers/simplepslogger.console)               |
+| File                                                                                                | Writes logs to static file                 | [File Provider](https://spsl.geekwhocodes.me/providers/simplepslogger.file)                     |
+| [AzLogAnalytics](https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/get-started-portal) | Send logs to Azure Log Analytics Workspace | [AzLogAnalytics Provider](https://spsl.geekwhocodes.me/providers/simplepslogger.azloganalytics) |
+| Rolling File                                                                                        | Writes logs to file                        | [To do](https://github.com/geekwhocodes/simple-ps-logger/projects/3#card-40824479)              |
+
+
+--- 
 
 ## Reporting Issues and Feedback
 
