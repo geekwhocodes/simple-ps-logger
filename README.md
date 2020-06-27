@@ -1,20 +1,20 @@
-<a style="text-decoration:none" href="https://www.powershellgallery.com/packages/SimplePSLogger" target="_blank" rel="noopener noreferrer">
+<a href="https://www.powershellgallery.com/packages/SimplePSLogger" target="_blank" rel="noopener noreferrer">
     <h3 align="center">Simple PowerShell Logging Module</h3>
 </a>
 <p align="center">
-  <a style="text-decoration:none" href="https://www.powershellgallery.com/packages/SimplePSLogger" target="_blank" rel="noopener noreferrer">
+  <a href="https://www.powershellgallery.com/packages/SimplePSLogger" target="_blank" rel="noopener noreferrer">
     <img src="./logo.svg" width="250x" alt="Simple PowerShell Logging Module logo" />
   </a>
 </p>
 
 <p align="center">
-  <a style="text-decoration:none" href="https://dev.azure.com/geekwhocodes/simple-ps-logger">
+  <a href="https://dev.azure.com/geekwhocodes/simple-ps-logger">
     <img src="https://img.shields.io/azure-devops/build/geekwhocodes/simple-ps-logger/12/master?style=flat-square" alt="Build Status" />
   </a>
-  <a style="text-decoration:none" href="https://dev.azure.com/geekwhocodes/simple-ps-logger/_test/analytics?definitionId=12&contextType=build">
+  <a href="https://dev.azure.com/geekwhocodes/simple-ps-logger/_test/analytics?definitionId=12&contextType=build">
     <img src="https://img.shields.io/azure-devops/tests/geekwhocodes/simple-ps-logger/12?style=flat-square" alt="Tests" />
   </a>
-  <a style="text-decoration:none" href="https://www.codefactor.io/repository/github/geekwhocodes/simple-ps-logger">
+  <a href="https://www.codefactor.io/repository/github/geekwhocodes/simple-ps-logger">
     <img src="https://img.shields.io/codefactor/grade/github/geekwhocodes/simple-ps-logger?style=flat-square" alt="Code Quality" />
   </a>
   
@@ -84,7 +84,7 @@ Read more about importing module here [Import Module](https://docs.microsoft.com
 
 To create new logger instance in your script [New-SimplePSLogger] cmdlet:
 
-```powershell
+```powershell 
 <#
     .PARAMETER Name 
     This can be used to identify for which purpose you are using this logger instance.
