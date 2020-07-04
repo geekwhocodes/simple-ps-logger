@@ -10,7 +10,7 @@
     
     # Version of the module. Use this to track when the module was updated.
 
-    ModuleVersion     = '0.1.1'
+    ModuleVersion     = '1.0.0'
     
     # ID used to uniquely identify this module''
     GUID              = '4d2e4e26-9ca9-4691-9045-0797a5afa249'
@@ -34,7 +34,6 @@
 		
     PrivateData       = @{
         PSData = @{
-            Prerelease = 'alpha'
             Tags       = @('powershell', 'pscore', 'logger', 'logging', 'log', 'audit', 'governance', 'loganalytics', 'filelogger', 'file', 'azure', 'linux', 'ubuntu', 'debian')
             LicenseUri = 'https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE'
             ProjectUri = 'https://github.com/geekwhocodes/simple-ps-logger'            
