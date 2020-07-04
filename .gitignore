@@ -94,3 +94,4 @@ Examples/Rest.ps1
 .vscode/spellright.dict
 Examples/play/*
 Examples/bechmark.ps1
+.build/un.ps1

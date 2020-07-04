@@ -90,7 +90,7 @@ To create new logger instance in your script [New-SimplePSLogger] cmdlet:
     This can be used to identify for which purpose you are using this logger instance.
     example - if you are performing task1
     Simple logger will generate log message like this :
-    [2020/06/12 15:48:31:2518 PM] [task1] [information]:   "Log from task1"
+    2020/06/12 15:48:31:2518 PM task1 information Log from task1
 
     here task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
     However, you can write your log message in your way by creating custom logging provider. SimplePSLogger will provide :
