@@ -1,7 +1,7 @@
 
 $TempArchiveDir = Join-Path $([system.io.path]::GetTempPath()) -ChildPath "SimplePSLoggerArchive"
 
-if ($TempArchiveDir -or $null -ne $TempArchiveDir) {
+if ($(Test-Path -Path $TempArchiveDir)) {
     Remove-Item -Path $TempArchiveDir -Recurse -Force
 }
 
