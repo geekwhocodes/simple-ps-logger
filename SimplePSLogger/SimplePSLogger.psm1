@@ -85,7 +85,7 @@ class SimplePSLogger : System.IDisposable {
             Write-Verbose "Writing using logger - $($logger.Name)"
             if (-Not $logger.Config) {
                 try {
-                    if ($this.ShouldLog($this.DefaultLogLevel, $Level)) {
+                    if ($this.ShouldLog($this.DefaultLogLevel, $Level) -and $logger.Config["Enabled"]) {
                         Invoke-Command $logger.Function -ArgumentList $this.Name, $Level, $Message -ErrorAction Continue   
                     }
                 }
@@ -101,7 +101,7 @@ class SimplePSLogger : System.IDisposable {
             else {
                 try {
                     $UserProvidedLogLevel = if (-Not $logger.Config["LogLevel"]) { $this.DefaultLogLevel }else { $logger.Config["LogLevel"] }
-                    if ($this.ShouldLog($UserProvidedLogLevel, $Level)) {
+                    if ($this.ShouldLog($UserProvidedLogLevel, $Level) -and $logger.Config["Enabled"]) {
                         Invoke-Command $logger.Function -ArgumentList ($this.Name), $Level, $Message, ($logger.Config) -ErrorAction Continue
                     }
                 }
