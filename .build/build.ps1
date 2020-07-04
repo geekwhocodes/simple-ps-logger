@@ -1,9 +1,11 @@
 
 $TempArchiveDir = Join-Path $([system.io.path]::GetTempPath()) -ChildPath "SimplePSLoggerArchive"
 
-Remove-Item -Path $TempArchiveDir -Recurse -Force
+if ($TempArchiveDir -or $null -ne $TempArchiveDir) {
+    Remove-Item -Path $TempArchiveDir -Recurse -Force
+}
 
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 1
 
 if (-Not $TempArchiveDir -or $null -eq $TempArchiveDir) {
     throw "Error while creating temp achive dir"
