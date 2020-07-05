@@ -25,8 +25,6 @@
 ---
 
 - [Introduction](#introduction)
-    - [Simple powershell module is very extensible and easy use.](#simple-powershell-module-is-very-extensible-and-easy-use)
-  - [Task Board - Board](#ullitask-board---boardliul)
 - [Modules](#modules)
   - [Installation](#installation)
     - [PowerShell Gallery](#powershell-gallery)
@@ -70,7 +68,7 @@ Below is a table contains our modules including built in provider modules.
 
 ```powershell
 # Install pre-release version 
-Install-Module -Name SimplePSLogger -AllowPrerelease
+Install-Module -Name SimplePSLogger -Confirm
 
 ```
 
@@ -110,7 +108,10 @@ $MyLogger = New-SimplePSLogger -Name "Unique Name"
         String - plain text string
         OtherTypes - json serialized string
 #>
+
 $MyLogger.Log('level', 'log message')
+
+$MyLogger.Log("message") # In this case, SimplePSLogger will automatically use default(information) loglevel
 
 $MyLogger.Dispose()
 
