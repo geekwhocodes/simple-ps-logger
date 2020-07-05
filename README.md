@@ -26,7 +26,7 @@
 
 - [Introduction](#introduction)
     - [Simple powershell module is very extensible and easy use.](#simple-powershell-module-is-very-extensible-and-easy-use)
-  - [- Task Board - Board](#ullitask-board---boardliul)
+  - [Task Board - Board](#ullitask-board---boardliul)
 - [Modules](#modules)
   - [Installation](#installation)
     - [PowerShell Gallery](#powershell-gallery)
