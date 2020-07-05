@@ -42,9 +42,15 @@
 
 # Introduction
 
-### Simple powershell module is very extensible and easy use. 
+> **SimplePSLogger provides an easy yet powerful way to save or display your logs.**
 - Docs - [SimplePSLogger Documentation](https://spsl.geekwhocodes.me/)
 - Task Board - [Board](https://github.com/geekwhocodes/simple-ps-logger/projects/3)
+
+### Features
+- Easy to use ⭐
+- Simple Configuration 👌
+- Built in Providers 💜
+- Extensible 🔥
 ---
 
 # Modules
@@ -141,12 +147,12 @@ $MyLogger.Dispose()
 
 ### Issues
 
-If you find any bugs when using this module, Please an issue on github
+If you find any bugs when using this module, Please an [issue on github](https://github.com/geekwhocodes/simple-ps-logger/issues)
 
 
 ### Feedback
 
-If there is a feature you would like to see  in SimplePSLogger file an issue on github page. 
+If there is a feature you would like to see  in SimplePSLogger file an [issue on github](https://github.com/geekwhocodes/simple-ps-logger/issues)
 
 
 
