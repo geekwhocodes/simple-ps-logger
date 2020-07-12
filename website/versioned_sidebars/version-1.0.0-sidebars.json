@@ -1,0 +1,76 @@
+{
+  "version-1.0.0/docs": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Simple PS Logger",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.0/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.0/contributing"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.0/quick-start"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.0/log-level"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.0/configurations"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Providers",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.0/simplepslogger.console"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.0/simplepslogger.file"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.0/simplepslogger.azloganalytics"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Custom Providers",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.0/custom-providers-intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.0/writing-custom-provider"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.0/custom-provider-registration"
+        }
+      ]
+    }
+  ]
+}
