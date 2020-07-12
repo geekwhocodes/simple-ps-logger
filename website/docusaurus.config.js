@@ -1,4 +1,3 @@
-const path = require("path");
 const versions = require("./versions.json");
 console.log(versions);
 const allDocHomesPaths = [
@@ -158,7 +157,7 @@ module.exports = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           editUrl:
-            "https://github.com/geekwhocodes/simple-ps-logger-docs/edit/master",
+            "https://github.com/geekwhocodes/simple-ps-logger/edit/master/website",
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
@@ -166,7 +165,7 @@ module.exports = {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            "https://github.com/geekwhocodes/simple-ps-logger-docs/edit/master/blog",
+            "https://github.com/geekwhocodes/simple-ps-logger/edit/master/website/blog",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
