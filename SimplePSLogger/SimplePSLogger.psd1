@@ -21,7 +21,12 @@
     PowerShellVersion = '5.1.1'
 
     FunctionsToExport = @(
-        'New-SimplePSLogger'
+        'New-SimplePSLogger',
+        'Get-SimplePSLogger',
+        'Set-SimplePSLogger',
+        'Remove-SimplePSLogger',
+        'Write-Log',
+        'Clear-Buffer'
     )
     RequiredModules   = @(
     )

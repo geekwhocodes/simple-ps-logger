@@ -71,6 +71,9 @@ class SimplePSLogger : System.IDisposable {
         [string]$Level, 
         [object]$Message
     ) {
+        if (-Not $Level) {
+            $Level = $this.DefaultLogLevel
+        }
         $Level = $this.GetLogLevel($Level)
 
         if (-Not $($Message.GetType() -eq 'String')) {
@@ -180,9 +183,10 @@ class SimplePSLogger : System.IDisposable {
         Processes remaining logs 
     #>
     [void] Flush() {
-        Write-Information "Flushing buffered logs of providers those support buffer." -InformationAction Continue
         foreach ($logger in $this.LoggingProviders) {
             if ($logger.Config -and $logger.Config["Flush"]) {
+                "Clearing $($logger.Name)'s buffered logs"
+                Write-Information "Clearing $($logger.Name)'s buffered logs" -InformationAction Continue
                 try {
                     Invoke-Command $logger.Function -ArgumentList ($this.Name), "information", "flush logs", $logger.Config, $true -ErrorAction Continue
                 }
@@ -278,7 +282,11 @@ function New-SimplePSLogger {
         <#TODO : Add support to read form file path, 
             First class support for object seems resonable because user can add secrets by without storing those in config file
         #>
-        $Configuration
+        $Configuration,
+        # Set Default 
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $SetDefault
     )
 
     try {
@@ -342,17 +350,305 @@ function New-SimplePSLogger {
                     $ProviderFunctionCode = [scriptblock]::Create($(Get-Command $ProviderFunctionName).Definition)
                     $ProviderLogger = [LoggingProvider]::Create($ProviderSectionName, $ProviderFunctionCode, $ProviderSectionConfig)
                     # .Add method retuns int32 in pipeline
-                    $added = $Loggers.Add($ProviderLogger)
+                    $null = $Loggers.Add($ProviderLogger)
                 }
             }            
         }
         $logger = [SimplePSLogger]::CreateLogger($Name, $Loggers)
-        $InformationPreference = $PrevInfoPreference
-        return $logger
+        Set-SimplePSLoggerContext -Logger $logger -Default:$SetDefault -ErrorAction Continue
     }
     catch {
         throw
     }
 }
 
-Export-ModuleMember -Function New-SimplePSLogger
+<#
+.SYNOPSIS
+    It sets SimplePSLogger Context
+.DESCRIPTION
+    SimplePSLogger context contains all instances intialized by the user along with the DEFAULT_LOGGER
+.EXAMPLE
+    
+.INPUTS
+    
+.OUTPUTS
+    
+.NOTES
+    Used internally
+#>
+Function Set-SimplePSLoggerContext {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [SimplePSLogger]
+        $Logger,
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $Default
+    )
+
+    if (-Not $script:SimplePSLoggerContext -or $script:SimplePSLoggerContext.Count -le 0) {
+        $script:SimplePSLoggerContext = @{
+            DEFAULT_LOGGER = $null
+            Instances      = @{}
+        }
+    }
+    if (-Not $script:SimplePSLoggerContext.DEFAULT_LOGGER) {
+        Add-SimplePSLogger $Logger -SetDefault -Force
+    }
+    if ($Default) {
+        Add-SimplePSLogger $Logger -SetDefault
+    }
+    else {
+        <# NOTE : If user creates new logger with exiting name then
+            the -Force parameter replaces existing logger with the new logger instance
+         #>
+        Add-SimplePSLogger $Logger -Force
+    }
+}
+
+<#
+.SYNOPSIS
+    Add logger instance to SimplePSLogger context
+.DESCRIPTION
+    Add logger instance to SimplePSLogger context
+
+.PARAMETER Logger
+    SimplePSLogger instance
+.PARAMETER SetDefault
+    Sets default logger if provided
+.PARAMETER Force
+    If logger instance with the same name is already exists it flag replaces it.
+.EXAMPLE
+    
+.INPUTS
+    
+.OUTPUTS
+    
+.NOTES
+    Used internally
+#>
+function Add-SimplePSLogger {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [SimplePSLogger]
+        $Logger,
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $SetDefault,
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $Force
+    )
+    if ($Force) {
+        $script:SimplePSLoggerContext.Instances.Remove($Logger.Name)
+        $script:SimplePSLoggerContext.Instances.Add($Logger.Name, $Logger)
+    }
+    else {
+        if ($null -ne $(Get-SimplePSLogger -Name $Logger.Name)) {
+            Write-Error "Logger witn name $($Logger.Name) already exists. You cannot create logger with same name." -ErrorAction Continue
+        }
+        $script:SimplePSLoggerContext.Instances.Add($Logger.Name, $Logger)
+    }
+
+    if ($SetDefault) {
+        $script:SimplePSLoggerContext.DEFAULT_LOGGER = $Logger
+    }
+}
+
+<#
+.SYNOPSIS
+    Retrieve registred logger instance by name or list all of them
+.DESCRIPTION
+    Retrive registred logger instance by name or list all of them
+.EXAMPLE
+    To retrieve all instances
+    Get-SimplePSLogger -All
+    To retrieve instance by name
+    Get-SimplePSLogger -Name "my-logger"
+.INPUTS
+    
+.OUTPUTS
+    1. Returns Object[] if list 
+    2. Returns SimplePSLogger instance or $null
+.NOTES
+    
+#>
+function Get-SimplePSLogger {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string]
+        $Name,
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $List
+    )
+    
+    if ($List) {
+        return $script:SimplePSLoggerContext.Instances.Values
+    }
+    if (-Not $script:SimplePSLoggerContext -or $null -eq $script:SimplePSLoggerContext) {
+        return $null
+    }
+    else {
+        return $script:SimplePSLoggerContext.Instances[$Name]
+    }
+}
+
+<#
+.SYNOPSIS
+    Set DEFAULT LOGGER 
+.DESCRIPTION
+    If you have mutiple logger instances, you can set default logger of your choice before logging messages.
+.EXAMPLE
+    Set-SimplePSLogger -Name "my-logger"
+.INPUTS
+    
+.OUTPUTS
+    
+.NOTES
+    You can use one(DEFAULT LOGGER) at a time.
+#>
+function Set-SimplePSLogger {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
+        [string]
+        $Name
+    )
+
+    if (-Not $script:SimplePSLoggerContext.Instances[$Name]) {
+        throw "Logger instance not found with name $Name"
+    }
+    $script:SimplePSLoggerContext.DEFAULT_LOGGER = $script:SimplePSLoggerContext.Instances[$Name]
+    Write-Verbose "Set default logger as $($script:SimplePSLoggerContext.DEFAULT_LOGGER.Name)"
+}
+
+<#
+.SYNOPSIS
+    Remove or close existing logger instance
+.DESCRIPTION
+    You need to remove logger before exiting from your script.
+    This removes logger so that you can register and use new logger in the same session.
+.EXAMPLE
+    Remove-SimplePSLogger -All
+    Remove-SimplePSLogger -Name "my-logger"
+.INPUTS
+    
+.OUTPUTS
+    
+.NOTES
+    ! It is recommended to remove all loggers before exiting from your script.
+#>
+function Remove-SimplePSLogger {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName)]
+        [string]
+        $Name,
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $All
+    )
+    process {
+        if ($All) {
+            $script:SimplePSLoggerContext = @{}
+            return
+        }
+        else {
+            if ($null -ne $(Get-SimplePSLogger -Name $Name)) {
+                Write-Information "Removing Logger $Name" -InformationAction Continue
+                $script:SimplePSLoggerContext.Instances.Remove($Name)
+                if ($script:SimplePSLoggerContext.DEFAULT_LOGGER.Name -eq $Name) {
+                    $script:SimplePSLoggerContext.DEFAULT_LOGGER = $null    
+                }
+            }
+        }
+    }
+}
+
+<#
+.SYNOPSIS
+    Write log messages
+.DESCRIPTION
+    Write log messages
+.EXAMPLE
+    Write-Log "info message"
+    Write-Log "warn messahe" "warning"
+    Write-Log "error message" "error"
+.INPUTS
+    
+.OUTPUTS
+    
+.NOTES
+    ! Default log level is 'information'
+#>
+function Write-Log {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true, HelpMessage = "Log message", ValueFromPipelineByPropertyName)]
+        [object]
+        $Message,
+        [Parameter(Mandatory = $false, HelpMessage = "LogLevel", ValueFromPipelineByPropertyName)]
+        [ValidateSet("verbose", "debug", "information", "warning", "error", "critical")]
+        [string]
+        $Level
+    )
+    process {
+        if (-Not $script:SimplePSLoggerContext.DEFAULT_LOGGER) {
+            Write-Warning "Default Logger not found, using latest available logger"
+            $loggers = Get-SimplePSLogger -All
+            if ($loggers.Count -gt 0) {
+                $NextDefaultLogger = $loggers.Keys[0]
+                $script:SimplePSLoggerContext.DEFAULT_LOGGER = $script:SimplePSLoggerContext.Instances[$NextDefaultLogger]
+            }
+            else {
+                Write-Error "Loggers not available. You might have removed logger, Please create new logger using New-SimplePSLogger cmdlt." -ErrorAction Continue
+                return
+            }
+        }
+        $Logger = $script:SimplePSLoggerContext.DEFAULT_LOGGER
+        $Logger.Log($Level, $Message)
+    }
+}
+
+function Clear-Buffer {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false, HelpMessage = "Logger name", ValueFromPipelineByPropertyName)]
+        [string]
+        $Name,
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $All
+    )
+
+    if (-Not $Name -and -Not $All) {
+        $logger = $script:SimplePSLoggerContext.DEFAULT_LOGGER
+        if ($logger) {
+            $logger.Flush()
+        }
+        return
+    }
+
+    if ($All) {
+        foreach ($logger In $script:SimplePSLoggerContext.Instances.Values) {
+            if ($logger) {
+                $logger.Flush()
+            }
+        }
+        return
+    }
+    if ($Name) {
+        $logger = Get-SimplePSLogger -Name $Name
+        if (-Not $logger) {
+            $logger.Flush()
+        }
+        return
+    }
+}
+
+
+Export-ModuleMember -Function New-SimplePSLogger, Get-SimplePSLogger, Set-SimplePSLogger, Remove-SimplePSLogger, Write-Log, Clear-Buffer

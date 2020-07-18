@@ -36,7 +36,7 @@ function New-Console-Logger {
         $Message
     )
     
-    $logMessage = "$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt")) $Name $($Level): $($Message.Trim())"
+    $logMessage = "$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:fff tt")) $Name $($Level): $($Message.Trim())"
 
     $InformationPreference = "Continue"
 
