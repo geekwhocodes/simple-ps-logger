@@ -7,47 +7,7 @@ Describe "New-SimplePSLogger" {
 
     Context "When we create simple ps logger instance using New-SimplePSLogger, " {
         
-        It "should not be null" {
-            $LoggerInstance = New-SimplePSLogger -Name $Name
-            $LoggerInstance | Should -Not -Be $null
-        }
-
-        It "creates logger with auto generated name" {
-            $LoggerInstance = New-SimplePSLogger -ErrorAction Continue
-            $LoggerInstance | Should -Not -Be $null
-            $LoggerInstance.Name | Should -Not -Be $null
-        }
-
-        It "gives name '<Name>', it returns '<Expected>'" -TestCases @(
-            @{Name = 'MySPSL'; Expected = 'MySPSL' }
-            @{Name = 'MyPowerShellLogger'; Expected = 'MyPowerShellLogger' }) 
-        {
-            param ($Name, $Expected)
-            
-            $LoggerInstance = New-SimplePSLogger -Name $Name
-            $LoggerInstance.Name | Should -Be $Expected
-        }
-
-        It "returns SimplePSLogger type" {
-            $LoggerInstance = New-SimplePSLogger -Name "MyLogger"
-            $LoggerInstance.GetType() | Should -Be "SimplePSLogger"
-        }
-
-        It "has DefaultLogLevel 'information'" {
-            $LoggerInstance = New-SimplePSLogger -Name "MyLogger"
-            $LoggerInstance.DefaultLogLevel | Should -Be "information"
-        }
-
-        It "should have supported loglevels" {
-            $LoggerInstance = New-SimplePSLogger -Name "MyLogger"
-            [hashtable]$LogLevels = @{"verbose" = 0; "debug" = 1; "information" = 2; "warning" = 3; "error" = 4; "critical" = 5; "none" = 6 }
-            $LoggerInstance.Loglevels | Should -BeLikeExactly $LogLevels
-        }
-        
-        It "should have at-least one logging provider registered" {
-            $LoggerInstance = New-SimplePSLogger -Name "MyLogger"
-            $LoggerInstance.LoggingProviders.Count | Should -BeGreaterThan 0
-        }        
+              
     }   
 }
 

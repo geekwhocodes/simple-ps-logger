@@ -1,10 +1,10 @@
-Import-Module -Name "../../SimplePSLogger/SimplePSLogger.psd1"
+Import-Module -Name "../SimplePSLogger/SimplePSLogger.psd1"
 
 $SimplePSLoggerConfig = @{
     Name      = "config-example"
     Providers = @{
         File = @{
-            LiteralFilePath = "G:\Git\simple-ps-logger\Examples\V2\cleared-logs.log"
+            LiteralFilePath = "G:\Git\simple-ps-logger\ExamplesV2\cleared-logs.log"
             LogLevel        = "verbose"
             Enabled         = $true
             Flush           = $true
@@ -17,7 +17,7 @@ $SimplePSLoggerConfig = @{
 #New-SimplePSLogger -Name "vanilla-script"
 New-SimplePSLogger -Name "vanilla-script-2" -Configuration $SimplePSLoggerConfig
 
-
+Set-SimplePSLogger -Name "vanilla-script"
 Get-Process | Select-Object -Property @{
     label      = 'Message';
     expression = { ("PID - " + $_.Id + " Proc Name - " + $_.ProcessName).ToString() };
@@ -33,3 +33,4 @@ Get-Process | Select-Object -Property @{
 
 
 Clear-Buffer -All
+Remove-SimplePSLogger -All

@@ -25,6 +25,7 @@
         'Get-SimplePSLogger',
         'Set-SimplePSLogger',
         'Remove-SimplePSLogger',
+        'Register-LoggingProvider',
         'Write-Log',
         'Clear-Buffer'
     )

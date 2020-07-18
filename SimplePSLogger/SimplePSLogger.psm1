@@ -614,6 +614,23 @@ function Write-Log {
     }
 }
 
+<#
+.SYNOPSIS
+    Flush buffered logs
+.DESCRIPTION
+    It's always better to batch your tasks and execute them as one task, it improves performance.
+    To avoid missing logs. flush them before exiting your script or flow.
+.EXAMPLE
+    Clear-Buffer # This flushes buffered logs of DEFAULT LOGGER
+    Clear-Buffer -Name "my-looger" # This flushes logs of provided logger instance
+    Clear-Buffer -All # This flushes all buffered logs of all logger instances
+.INPUTS
+    
+.OUTPUTS
+    
+.NOTES
+    Always clear call this command at the end of your script, usually in finally block
+#>
 function Clear-Buffer {
     [CmdletBinding()]
     param (
@@ -650,5 +667,50 @@ function Clear-Buffer {
     }
 }
 
+<#
+.SYNOPSIS
+    Register your custom logging provider. Read more here https://spsl.geekwhocodes.me/docs/custom-provider-registration
+.DESCRIPTION
+    Register your custom logging provider. Read more here https://spsl.geekwhocodes.me/docs/custom-provider-registration
+.EXAMPLE
+    Register-LoggingProvider -Name "AwesomeLogger" -FunctionName "FunctionName" -Configuration @{
+            Enabled  = $true
+            LogLevel = "information"
+            Authkey  = "key"
+        }
+.INPUTS
+    
+.OUTPUTS
+    
+.NOTES
+    Make sure Function/Module is imported before registering your provider 
+#>
+function Register-LoggingProvider {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true, HelpMessage = "Name for your custom logging provider name")]
+        [ValidateNotNull()]
+        [string]
+        $Name, 
+        [Parameter(Mandatory = $true, HelpMessage = "Function name which implements SimplePSLogger custom provider interface.")]
+        [ValidateNotNull()]
+        [string]
+        $FunctionName,
+        [Parameter(Mandatory = $true, HelpMessage = "Configurations required for your logging provider")]
+        [ValidateNotNull()]
+        [object]
+        $Configuration
+    )
 
-Export-ModuleMember -Function New-SimplePSLogger, Get-SimplePSLogger, Set-SimplePSLogger, Remove-SimplePSLogger, Write-Log, Clear-Buffer
+    if (-Not $script:SimplePSLoggerContext) {
+        Write-Error "SmplePSLogger is not created. Create logger using New-SimplePSLogger before registering custom provider" -ErrorAction Continue
+        return
+    }
+    if (-Not $script:SimplePSLoggerContext.DEFAULT_LOGGER) {
+        Write-Error "DEFAULT LOGGER is not set, Please set default logger using Set-SimplePSLogger cmdlt" -ErrorAction Continue
+        return 
+    }
+    $script:SimplePSLoggerContext.DEFAULT_LOGGER.RegisterProvider($Name, $FunctionName, $Configuration)
+}
+
+Export-ModuleMember -Function New-SimplePSLogger, Get-SimplePSLogger, Set-SimplePSLogger, Remove-SimplePSLogger, Register-LoggingProvider, Write-Log, Clear-Buffer
