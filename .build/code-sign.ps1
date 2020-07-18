@@ -36,14 +36,10 @@ if (-not @($FilesToSign)) {
     return "All files are already signed. yay!"
 }
 
-$results = $FilesToSign | ForEach-Object {
+$FilesToSign | ForEach-Object {
     $Signed = Set-AuthenticodeSignature $_ -Certificate $cert -TimestampServer 'http://timestamp.digicert.com' -ErrorAction Stop
     $Signed | Out-String | Write-Output
-    $Signed
-}
-
-$failed = $results | Where-Object { $_.Status -ne "Valid" }
-
-if ($failed) {
-    throw "Failed to sign -  $($failed.Path)"
+    if ($Signed.Status -ne "Valid") {
+        Write-Error "Failed to sign $($Signed.Path) file" -ErrorAction Continue
+    }
 }
