@@ -580,7 +580,7 @@ function Remove-SimplePSLogger {
 .NOTES
     ! Default log level is 'information'
 #>
-function Write-SLog {
+function Write-SimpleLog {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, HelpMessage = "Log message", ValueFromPipelineByPropertyName)]
@@ -709,4 +709,4 @@ function Register-LoggingProvider {
     $script:SimplePSLoggerContext.DEFAULT_LOGGER.RegisterProvider($Name, $FunctionName, $Configuration)
 }
 
-Export-ModuleMember -Function New-SimplePSLogger, Get-SimplePSLogger, Set-SimplePSLogger, Remove-SimplePSLogger, Register-LoggingProvider, Write-Log, Clear-Buffer
+Export-ModuleMember -Function New-SimplePSLogger, Get-SimplePSLogger, Set-SimplePSLogger, Remove-SimplePSLogger, Register-LoggingProvider, Write-SimpleLog , Clear-Buffer

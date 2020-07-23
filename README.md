@@ -25,6 +25,8 @@
 ---
 
 - [Introduction](#introduction)
+    - [Features](#features)
+  - [- Lightning fast ⚡️](#ullilightning-fast-️liul)
 - [Modules](#modules)
   - [Installation](#installation)
     - [PowerShell Gallery](#powershell-gallery)
@@ -43,12 +45,18 @@
 > **SimplePSLogger provides an easy yet powerful way to save or display your logs.**
 - Docs - [SimplePSLogger Documentation](https://spsl.geekwhocodes.me/)
 - Task Board - [Board](https://github.com/geekwhocodes/simple-ps-logger/projects/3)
-
+- [V2 Docs](https://next-simplepslogger.onrender.com/docs/next/)
 ### Features
-- Easy to use ⭐
+- Built with 💜 and PowerShell Core
+  - Easy to use
+  - Cross platform
 - Simple Configuration 👌
+- Pluggable
+  - Bring your own logging provider
+  - Open source your logging provider to share with your fellow PowerShellers, because sharing is caring 
 - Built in Providers 💜
-- Extensible 🔥
+  - Start logging within a minute 🔥
+- Lightning fast ⚡️ 
 ---
 
 # Modules

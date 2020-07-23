@@ -26,7 +26,7 @@
         'Set-SimplePSLogger',
         'Remove-SimplePSLogger',
         'Register-LoggingProvider',
-        'Write-Log',
+        'Write-SimpleLog',
         'Clear-Buffer'
     )
     RequiredModules   = @(

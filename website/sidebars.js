@@ -26,7 +26,7 @@ module.exports = {
       "commands/get-simplepslogger",
       "commands/set-simplepslogger",
       "commands/remove-simplepslogger",
-      "commands/write-log",
+      "commands/write-simplelog",
       "commands/clear-buffer",
       "commands/register-loggingprovider",
     ],
