@@ -26,7 +26,6 @@
 
 - [Introduction](#introduction)
     - [Features](#features)
-  - [- Lightning fast ⚡️](#ullilightning-fast-️liul)
 - [Modules](#modules)
   - [Installation](#installation)
     - [PowerShell Gallery](#powershell-gallery)
@@ -57,6 +56,7 @@
 - Built in Providers 💜
   - Start logging within a minute 🔥
 - Lightning fast ⚡️ 
+  
 ---
 
 # Modules
