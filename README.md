@@ -119,7 +119,7 @@ $Object = @{User = @{Name= "geekwhocodes", LastLogin = "2020/06/12 15:48:31:2518
 # Log PowerShell object, SimplePSLogger will automatically serialize this object
 Write-SimpleLog $Object "warning"
 # Flush bufferred logs 
-Clean-Buffer -Name "MyLogger"
+Clear-Buffer -Name "MyLogger"
 # Remove all logger instances
 Remove-SimplePSLogger -Name "MyLogger"
 
