@@ -53,7 +53,7 @@ Function Send-LogAnalyticsData($customerId, $sharedKey, $body, $logType) {
         }
 
         # TODO : add status code check and resiliency
-        $response = Invoke-RestMethod @params
+        $null = Invoke-RestMethod @params
     }
     catch {
         throw
@@ -195,3 +195,4 @@ Function New-AzLogAnalytics-Logger {
 
 # TODO : is there any way to ignore other functions export?
 Export-ModuleMember -Function New-AzLogAnalytics-Logger, Send-LogAnalyticsData, Build-Signature
+
