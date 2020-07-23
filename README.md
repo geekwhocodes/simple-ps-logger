@@ -104,24 +104,24 @@ To create new logger instance in your script [New-SimplePSLogger] cmdlet:
     Simple logger will generate log message like this :
     2020/06/12 15:48:31:2518 PM task1 information Log from task1
 
-    here task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
-    However, you can write your log message in your way by creating custom logging provider. SimplePSLogger will provide :
-    Name, Level and Message paramters to your custom logging provider and the you can use them to create your log message.
+    task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
 #>
 
-$MyLogger = New-SimplePSLogger -Name "Unique Name"
+New-SimplePSLogger -Name "MyLogger"
 
-<# To log your log message 
-    *Log Message type conversion*:
-        String - plain text string
-        OtherTypes - json serialized string
-#>
+# information log
+Write-SimpleLog "Log message" "information"
 
-$MyLogger.Log('level', 'log message')
+# default log level
+Write-SimpleLog "message" # In this case, SimplePSLogger will automatically use default(information) loglevel
 
-$MyLogger.Log("message") # In this case, SimplePSLogger will automatically use default(information) loglevel
-
-$MyLogger.Dispose()
+$Object = @{User = @{Name= "geekwhocodes", LastLogin = "2020/06/12 15:48:31:2518 PM" } }
+# Log PowerShell object, SimplePSLogger will automatically serialize this object
+Write-SimpleLog $Object "warning"
+# Flush bufferred logs 
+Clean-Buffer -Name "MyLogger"
+# Remove all logger instances
+Remove-SimplePSLogger -Name "MyLogger"
 
 ```
 
