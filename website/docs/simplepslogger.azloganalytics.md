@@ -35,12 +35,16 @@ Use Flush method to flush your log messages at the end of the script otherwise t
 ### How to flush logs 
 
 ```powershell {6}
-$MyLogger = New-SimplePSLogger -Name "Unique Name"
-$MyLogger.Log('information', 'log message')
-$MyLogger.Log("message") # In this case, SimplePSLogger will automatically use default(information) loglevel
+New-SimplePSLogger -Name "Unique Name"
+Write-Log "log message" "warning"
+Write-Log "info log message" # In this case, SimplePSLogger will automatically use default(information) loglevel
 $Object = @{User = @{Name= "geekwhocodes", LastLogin = "2020/06/12 15:48:31:2518 PM" } }
-$MyLogger.Log('warning', $Object)
-$MyLogger.Flush()
+Write-Log $Object
+Clear-Buffer -Name "Unique Name"
+# Or You can use 
+Clear-Buffer -All
+# Remove all logger instances
+Remove-SimplePSLogger -All
 ```
 
 

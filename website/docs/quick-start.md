@@ -19,6 +19,7 @@ Setup logger into your script under less than a minute 🚀
 
 ```powershell
 # Install from PS Gallery 
+# NOTE: This module is not yest published to PS Gallery
 Install-Module -Name SimplePSLogger -RequiredVersion 1.0.0 -Scope CurrentUser
 ```
 #### Import from Directory
@@ -43,16 +44,16 @@ Read more about importing module here [Import Module](https://docs.microsoft.com
     task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
 #>
 
-$MyLogger = New-SimplePSLogger -Name "Unique Name"
+New-SimplePSLogger -Name "Unique Name"
 
 # information log
-$MyLogger.Log('information', 'log message')
+Write-Log "Log message" "information"
 
 # default log level
-$MyLogger.Log("message") # In this case, SimplePSLogger will automatically use default(information) loglevel
+Write-Log "message" # In this case, SimplePSLogger will automatically use default(information) loglevel
 
 $Object = @{User = @{Name= "geekwhocodes", LastLogin = "2020/06/12 15:48:31:2518 PM" } }
 # Log PowerShell object, SimplePSLogger will automatically serialize this object
-$MyLogger.Log('warning', $Object)
+Write-Log $Object "warning"
 
 ```
