@@ -44,16 +44,20 @@ Read more about importing module here [Import Module](https://docs.microsoft.com
     task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
 #>
 
-New-SimplePSLogger -Name "Unique Name"
+New-SimplePSLogger -Name "MyLogger"
 
 # information log
-Write-Log "Log message" "information"
+Write-SimpleLog "Log message" "information"
 
 # default log level
-Write-Log "message" # In this case, SimplePSLogger will automatically use default(information) loglevel
+Write-SimpleLog "message" # In this case, SimplePSLogger will automatically use default(information) loglevel
 
 $Object = @{User = @{Name= "geekwhocodes", LastLogin = "2020/06/12 15:48:31:2518 PM" } }
 # Log PowerShell object, SimplePSLogger will automatically serialize this object
-Write-Log $Object "warning"
+Write-SimpleLog $Object "warning"
 
+# Flush bufferred logs 
+Clean-Buffer -Name "MyLogger"
+# Remove all logger instances
+Remove-SimplePSLogger -Name "MyLogger"
 ```

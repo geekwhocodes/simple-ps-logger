@@ -55,11 +55,11 @@ Register-LoggingProvider -Name "AwesomeLogger" `
                         -FunctionName "ExtProvider" `
                         -Configuration $SimplePSLoggerConfig.Providers["AwesomeLogger"]
 
-Write-Log "sgl" "warning"
+Write-SimpleLog "sgl" "warning"
 # Flush logs
-Clear-Buffer -All
+Clear-Buffer -Name "ps-play"
 # Remove logger instance
-Remove-SimplePSLogger -All
+Remove-SimplePSLogger -Name "ps-play"
 ```
 
 ### Registration Paramters
