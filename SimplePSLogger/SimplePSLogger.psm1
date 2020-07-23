@@ -264,13 +264,14 @@ class LoggingProvider {
         }
         }
     }
-
 .EXAMPLE
-    $myLogger = New-SimplePSLogger -Name "action-1234"
-    $myLogger.Log('level', 'log message')
-    $myLogger.Dispose()
-
+    New-SimplePSLogger -Name "action-1234"
+.EXAMPLE 
+    New-SimplePSLogger -Configuration $SimplePSLoggerConfig
+.FUNCTIONALITY
+    new, new logger, create logger, create
 .NOTES
+
 #>
 function New-SimplePSLogger {
     param (
@@ -368,11 +369,6 @@ function New-SimplePSLogger {
 .DESCRIPTION
     SimplePSLogger context contains all instances intialized by the user along with the DEFAULT_LOGGER
 .EXAMPLE
-    
-.INPUTS
-    
-.OUTPUTS
-    
 .NOTES
     Used internally
 #>
@@ -418,13 +414,7 @@ Function Set-SimplePSLoggerContext {
 .PARAMETER SetDefault
     Sets default logger if provided
 .PARAMETER Force
-    If logger instance with the same name is already exists it flag replaces it.
-.EXAMPLE
-    
-.INPUTS
-    
-.OUTPUTS
-    
+    If logger instance with the same name is already exists it flag replaces it.    
 .NOTES
     Used internally
 #>
@@ -461,26 +451,30 @@ function Add-SimplePSLogger {
 .SYNOPSIS
     Retrieve registred logger instance by name or list all of them
 .DESCRIPTION
-    Retrive registred logger instance by name or list all of them
+    Retrieve registred logger instance by name or list all of them
 .EXAMPLE
-    To retrieve all instances
     Get-SimplePSLogger -All
-    To retrieve instance by name
-    Get-SimplePSLogger -Name "my-logger"
+.INPUTS
+
+.OUTPUTS
+    Returns Object[] of all logger instances
+.EXAMPLE
+    Get-SimplePSLogger -Name "my-logger"    
 .INPUTS
     
 .OUTPUTS
-    1. Returns Object[] if list 
-    2. Returns SimplePSLogger instance or $null
+    Returns [SimplePSLogger]
 .NOTES
     
 #>
 function Get-SimplePSLogger {
     [CmdletBinding()]
     param (
+        # Name of the logger instance .PARAMETER
         [Parameter(Mandatory = $false)]
         [string]
         $Name,
+        # List all logger instances .PARAMETER
         [Parameter(Mandatory = $false)]
         [switch]
         $List
@@ -518,12 +512,13 @@ function Set-SimplePSLogger {
         [string]
         $Name
     )
-
-    if (-Not $script:SimplePSLoggerContext.Instances[$Name]) {
-        throw "Logger instance not found with name $Name"
+    Process {
+        if (-Not $script:SimplePSLoggerContext.Instances[$Name]) {
+            throw "Logger instance not found with name $Name"
+        }
+        $script:SimplePSLoggerContext.DEFAULT_LOGGER = $script:SimplePSLoggerContext.Instances[$Name]
+        Write-Verbose "Set default logger as $($script:SimplePSLoggerContext.DEFAULT_LOGGER.Name)"
     }
-    $script:SimplePSLoggerContext.DEFAULT_LOGGER = $script:SimplePSLoggerContext.Instances[$Name]
-    Write-Verbose "Set default logger as $($script:SimplePSLoggerContext.DEFAULT_LOGGER.Name)"
 }
 
 <#
@@ -585,7 +580,7 @@ function Remove-SimplePSLogger {
 .NOTES
     ! Default log level is 'information'
 #>
-function Write-Log {
+function Write-SLog {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, HelpMessage = "Log message", ValueFromPipelineByPropertyName)]
@@ -641,29 +636,30 @@ function Clear-Buffer {
         [switch]
         $All
     )
-
-    if (-Not $Name -and -Not $All) {
-        $logger = $script:SimplePSLoggerContext.DEFAULT_LOGGER
-        if ($logger) {
-            $logger.Flush()
-        }
-        return
-    }
-
-    if ($All) {
-        foreach ($logger In $script:SimplePSLoggerContext.Instances.Values) {
+    Process {
+        if (-Not $Name -and -Not $All) {
+            $logger = $script:SimplePSLoggerContext.DEFAULT_LOGGER
             if ($logger) {
                 $logger.Flush()
             }
+            return
         }
-        return
-    }
-    if ($Name) {
-        $logger = Get-SimplePSLogger -Name $Name
-        if (-Not $logger) {
-            $logger.Flush()
+
+        if ($All) {
+            foreach ($logger In $script:SimplePSLoggerContext.Instances.Values) {
+                if ($logger) {
+                    $logger.Flush()
+                }
+            }
+            return
         }
-        return
+        if ($Name) {
+            $logger = Get-SimplePSLogger -Name $Name
+            if (-Not $logger) {
+                $logger.Flush()
+            }
+            return
+        }
     }
 }
 
