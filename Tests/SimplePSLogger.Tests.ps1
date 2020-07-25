@@ -3,11 +3,11 @@ Get-Module SimplePSLogger | Remove-Module -Force
 Import-Module -Name $pwd\SimplePSLogger\SimplePSLogger.psd1 -Force
 Import-Module -Name $pwd\Tests\ExternalLoggingProvider\ExternalLoggingProvider.psm1
 
+# TODO : Write testes to test cmdlets
 Describe "New-SimplePSLogger" {
 
     Context "When we create simple ps logger instance using New-SimplePSLogger, " {
-        
-              
+
     }   
 }
 
