@@ -32,8 +32,8 @@
     - [Import from Directory](#import-from-directory)
 - [Usage](#usage)
       - [Create Logger Instance](#create-logger-instance)
-- [Supported Log Levels](#supported-log-levels)
 - [Built in Providers](#built-in-providers)
+- [Supported Log Levels](#supported-log-levels)
   - [Reporting Issues and Feedback](#reporting-issues-and-feedback)
     - [Issues](#issues)
     - [Feedback](#feedback)
@@ -128,18 +128,6 @@ Remove-SimplePSLogger -Name "MyLogger"
 
 ---
 
-# Supported Log Levels 
-| Level       | Description              |
-| ----------- | ------------------------ |
-| verbose     | for verbose messages     |
-| debug       | for debug messages       |
-| information | for information messages |
-| warning     | for warning messages     |
-| error       | for error messages       |
-| critical    | for critical messages    |
-
----
-
 # Built in Providers
 
 | Provider                                                                                            | Description                                | Docs                                                                                            |
@@ -149,6 +137,17 @@ Remove-SimplePSLogger -Name "MyLogger"
 | [AzLogAnalytics](https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/get-started-portal) | Send logs to Azure Log Analytics Workspace | [AzLogAnalytics Provider](https://spsl.geekwhocodes.me/providers/simplepslogger.azloganalytics) |
 | Rolling File                                                                                        | Writes logs to file                        | [To do](https://github.com/geekwhocodes/simple-ps-logger/projects/3#card-40824479)              |
 
+---
+
+# Supported Log Levels 
+| Level       | Description              |
+| ----------- | ------------------------ |
+| verbose     | for verbose messages     |
+| debug       | for debug messages       |
+| information | for information messages |
+| warning     | for warning messages     |
+| error       | for error messages       |
+| critical    | for critical messages    |
 
 --- 
 
