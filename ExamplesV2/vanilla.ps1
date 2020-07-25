@@ -1,3 +1,7 @@
+<#
+    This example works with version 2.x
+#>
+
 Import-Module -Name "../SimplePSLogger/SimplePSLogger.psd1"
 
 $SimplePSLoggerConfig = @{
@@ -15,21 +19,17 @@ $SimplePSLoggerConfig = @{
     New-SimplePSLogger -Name "vanilla-script" -Configuration $SimplePSLoggerConfig
 }
 #New-SimplePSLogger -Name "vanilla-script"
-New-SimplePSLogger -Name "vanilla-script-2" -Configuration $SimplePSLoggerConfig
+$rt = New-SimplePSLogger -Name "vanilla-script-2" -Configuration $SimplePSLoggerConfig
 
 Set-SimplePSLogger -Name "vanilla-script"
-Get-Process | Select-Object -Property @{
-    label      = 'Message';
-    expression = { ("PID - " + $_.Id + " Proc Name - " + $_.ProcessName).ToString() };
-} 
-#, @{
-#     label      = 'Level';
-#     expression = { "error" };
-# }
-| Write-Log
+# Get-Process | Select-Object -Property @{
+#     label      = 'Message';
+#     expression = { ("PID - " + $_.Id + " Proc Name - " + $_.ProcessName).ToString() };
+# } 
+# | Write-SimpleLog
 
 
-#$ef | Write-Log
+Write-SimpleLog "sdfkh"
 
 
 Clear-Buffer -All

@@ -1,3 +1,6 @@
+<#
+    This example works with version 2.x
+#>
 
 begin { 
     Import-Module -Name "../SimplePSLogger/SimplePSLogger.psd1"
@@ -6,13 +9,13 @@ begin {
 process {
     try {
 
-        Write-Log "warn" "warning"
-        #Write-Log "unsupported level" "unsupported" not supported in v2
-        Write-Log "critical" "critical"
-        Write-Log "verbose" "verbose"
-        Write-Log "information" "information"
-        Write-Log "debug" "debug"
-        Write-Log "error" "error"
+        Write-SimpleLog "warn" "warning"
+        #Write-SimpleLog "unsupported level" "unsupported" not supported in v2
+        Write-SimpleLog "critical" "critical"
+        Write-SimpleLog "verbose" "verbose"
+        Write-SimpleLog "information" "information"
+        Write-SimpleLog "debug" "debug"
+        Write-SimpleLog "error" "error"
 
         $objectLog = @{
             "k1" = "dsfjlijoiefoiuowfwuoewf"
@@ -25,8 +28,8 @@ process {
             }
         }
 
-        Write-Log $objectLog
-        Write-Log "Script executed successfully" "information"
+        Write-SimpleLog $objectLog
+        Write-SimpleLog "Script executed successfully" "information"
     }
     catch {
         Clear-Buffer -All

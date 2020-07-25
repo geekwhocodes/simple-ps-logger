@@ -1,3 +1,7 @@
+<#
+    This example works with version 2.x
+#>
+
 Import-Module -Name "../SimplePSLogger/SimplePSLogger.psd1"
 
 # In memory conguration

@@ -1,3 +1,7 @@
+<#
+    This example works with version 2.x
+#>
+
 Import-Module -Name "../SimplePSLogger/SimplePSLogger.psd1"
 Import-Module -Name "./ExtProvider/ExtProvider.psm1"
 Set-StrictMode -Version 3.0
@@ -26,7 +30,7 @@ $SimplePSLoggerConfig = @{
 New-SimplePSLogger -Name "ps-play"
 Register-LoggingProvider -Name "AwesomeLogger" -FunctionName "ExtProvider" -Configuration $SimplePSLoggerConfig.Providers["AwesomeLogger"]
 
-Write-Log "sgl" "warning"
+Write-SimpleLog "sgl" "warning"
 
 Clear-Buffer -All
 Remove-SimplePSLogger -All
