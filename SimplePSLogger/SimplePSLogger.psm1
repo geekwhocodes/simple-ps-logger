@@ -35,7 +35,7 @@ class SimplePSLogger : System.IDisposable {
     hidden [string] GetLogLevel($level) {
         # TODO : optimize it later
         if (-Not $this.LogLevels[$level]) {
-            Write-Information "Log level '$level' not supported, defaulting to '$this.DefaultLogLevel'" -InformationAction Continue
+            Write-Information "Log level '$level' not supported, defaulting to '$($this.DefaultLogLevel)'" -InformationAction Continue
             $level = $this.DefaultLogLevel
         }
         return $level
