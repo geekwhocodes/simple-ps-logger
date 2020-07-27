@@ -25,14 +25,16 @@
 ---
 
 - [Introduction](#introduction)
+    - [Features](#features)
 - [Modules](#modules)
   - [Installation](#installation)
     - [PowerShell Gallery](#powershell-gallery)
     - [Import from Directory](#import-from-directory)
 - [Usage](#usage)
-      - [Create Logger Instance](#create-logger-instance)
-- [Supported Log Levels](#supported-log-levels)
+        - [Example 1](#example-1)
+        - [Example 2](#example-2)
 - [Built in Providers](#built-in-providers)
+- [Supported Log Levels](#supported-log-levels)
   - [Reporting Issues and Feedback](#reporting-issues-and-feedback)
     - [Issues](#issues)
     - [Feedback](#feedback)
@@ -43,12 +45,19 @@
 > **SimplePSLogger provides an easy yet powerful way to save or display your logs.**
 - Docs - [SimplePSLogger Documentation](https://spsl.geekwhocodes.me/)
 - Task Board - [Board](https://github.com/geekwhocodes/simple-ps-logger/projects/3)
-
+- [V2 Docs](https://next-simplepslogger.onrender.com/docs/next/)
 ### Features
-- Easy to use ⭐
+- Built with 💜 and PowerShell Core
+  - Easy to use
+  - Cross platform
 - Simple Configuration 👌
-- Built in Providers 💜
-- Extensible 🔥
+- Pluggable
+  - Bring your own logging provider
+  - Open source your logging provider to share with your fellow PowerShellers, because sharing is caring 
+- Built in Providers 🔥
+  - Start logging within a minute 
+- Lightning fast ⚡️ 
+  
 ---
 
 # Modules
@@ -84,9 +93,8 @@ Read more about importing module here [Import Module](https://docs.microsoft.com
 
 # Usage
 
-#### Create Logger Instance
-
-To create new logger instance in your script [New-SimplePSLogger] cmdlet:
+##### Example 1
+Create new logger instance using ```New-SimplePSLogger``` cmdlet:
 
 ```powershell 
 <#
@@ -96,39 +104,88 @@ To create new logger instance in your script [New-SimplePSLogger] cmdlet:
     Simple logger will generate log message like this :
     2020/06/12 15:48:31:2518 PM task1 information Log from task1
 
-    here task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
-    However, you can write your log message in your way by creating custom logging provider. SimplePSLogger will provide :
-    Name, Level and Message paramters to your custom logging provider and the you can use them to create your log message.
+    task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
 #>
 
-$MyLogger = New-SimplePSLogger -Name "Unique Name"
+New-SimplePSLogger -Name "MyLogger"
 
-<# To log your log message 
-    *Log Message type conversion*:
-        String - plain text string
-        OtherTypes - json serialized string
-#>
+# information log
+Write-SimpleLog "Log message" "information"
 
-$MyLogger.Log('level', 'log message')
+# default log level
+Write-SimpleLog "message" # In this case, SimplePSLogger will automatically use default(information) loglevel
 
-$MyLogger.Log("message") # In this case, SimplePSLogger will automatically use default(information) loglevel
+$Object = @{User = @{Name= "geekwhocodes", LastLogin = "2020/06/12 15:48:31:2518 PM" } }
+# Log PowerShell object, SimplePSLogger will automatically serialize this object
+Write-SimpleLog $Object "warning"
 
-$MyLogger.Dispose()
+# Note - DON'T forget to flush and remove logger instance/instances
+
+# Flush bufferred logs 
+Clear-Buffer -Name "MyLogger"
+# Remove all logger instances
+Remove-SimplePSLogger -Name "MyLogger"
 
 ```
 
+##### Example 2
+Create new logger instance using ```New-SimplePSLogger``` cmdlet: <br/>
+Read more about [configuration](https://spsl.geekwhocodes.me/docs/configurations)
 
----
+```powershell 
+<#
+    .PARAMETER Name 
+    This can be used to identify for which purpose you are using this logger instance.
+    example - if you are performing task1
+    Simple logger will generate log message like this :
+    2020/06/12 15:48:31:2518 PM task1 information Log from task1
+    task1 is unique name you used while creating the instance. This will helpful to analyze your logs later. 
 
-# Supported Log Levels 
-| Level       | Description              |
-| ----------- | ------------------------ |
-| verbose     | for verbose messages     |
-| debug       | for debug messages       |
-| information | for information messages |
-| warning     | for warning messages     |
-| error       | for error messages       |
-| critical    | for critical messages    |
+    .PARAMETER Configuration
+    Configuration to use for logger instance.
+#>
+
+$SimplePSLoggerConfig = @{
+    Name      = "az-analytics-example-buffered"
+    Providers = @{
+        File           = @{
+            LiteralFilePath = "G:\Git\simple-ps-logger\ExamplesV2\example-with-config.log"
+            LogLevel        = "information"
+            Enabled         = $true
+        }
+        AzLogAnalytics = @{
+            Enabled    = $true
+            LogLevel   = "verbose"
+            #WorkspaceId  = "****************" # Fetch from your secure store. example - KeyVault
+            #WorkspaceKey = "****************" # Fetch from your secure store. example - KeyVault
+            LogType    = "GWCPSLogger" # https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api#record-type-and-properties
+            BufferSize = 50
+            Flush      = $true
+        }
+    }
+}
+
+New-SimplePSLogger -Name "MyLogger" -Configuration $SimplePSLoggerConfig
+
+# information log
+Write-SimpleLog "Log message" "information"
+
+# default log level
+Write-SimpleLog "message" # In this case, SimplePSLogger will automatically use default(information) loglevel
+
+$Object = @{User = @{Name= "geekwhocodes", LastLogin = "2020/06/12 15:48:31:2518 PM" } }
+# Log PowerShell object, SimplePSLogger will automatically serialize this object
+Write-SimpleLog $Object "warning"
+
+# Note - DON'T forget to flush and remove logger instance/instances
+
+# Flush bufferred logs 
+Clear-Buffer -Name "MyLogger"
+# Remove all logger instances
+Remove-SimplePSLogger -Name "MyLogger"
+
+```
+
 
 ---
 
@@ -141,6 +198,17 @@ $MyLogger.Dispose()
 | [AzLogAnalytics](https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/get-started-portal) | Send logs to Azure Log Analytics Workspace | [AzLogAnalytics Provider](https://spsl.geekwhocodes.me/providers/simplepslogger.azloganalytics) |
 | Rolling File                                                                                        | Writes logs to file                        | [To do](https://github.com/geekwhocodes/simple-ps-logger/projects/3#card-40824479)              |
 
+---
+
+# Supported Log Levels 
+| Level       | Description              |
+| ----------- | ------------------------ |
+| verbose     | for verbose messages     |
+| debug       | for debug messages       |
+| information | for information messages |
+| warning     | for warning messages     |
+| error       | for error messages       |
+| critical    | for critical messages    |
 
 --- 
 

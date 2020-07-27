@@ -18,7 +18,7 @@ You can configure two properties -
 
 | Name     | Type                     | Description                                                                                                             | Default Value |
 | -------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------- |
-| Enabled  | Boolean                  | Tells SimplePSLogger whether to enable this provider or not                                                             | false         |
+| Enabled  | Boolean                  | Tells SimplePSLogger whether to enable this provider or not                                                             | *true*        |
 | LogLevel | [LogLevel](log-level.md) | It tell this provider to which messages to log. Read more about [loglevel precedence](log-level.md#loglevel-precedence) | information   |
 
 <br /><br />

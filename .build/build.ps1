@@ -14,7 +14,7 @@ if (-Not $TempArchiveDir -or $null -eq $TempArchiveDir) {
 Write-Information "Creating stagged archive at $TempArchiveDir" -InformationAction Continue
 Copy-Item -Path "$pwd\SimplePSLogger" -Destination $TempArchiveDir -Recurse -Force
 Write-Information "Creating stagged archive at $TempArchiveDir" -InformationAction Continue
-
+<#>
 $FilesToWrite = Get-ChildItem -Path $TempArchiveDir -Recurse -ErrorAction Stop | Where-Object { $_.Extension -in ".psd1", ".psm1", ".ps1" } | Select-Object -ExpandProperty FullName
 
 #Remove existing signature
@@ -40,5 +40,5 @@ $FilesToWrite | ForEach-Object {
         Write-Error -Message $_.Exception.Message
     }
 }
-
+#>
 return $TempArchiveDir

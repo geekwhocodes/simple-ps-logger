@@ -21,5 +21,14 @@ module.exports = {
       "writing-custom-provider",
       "custom-provider-registration",
     ],
+    References: [
+      "commands/new-simplepslogger",
+      "commands/get-simplepslogger",
+      "commands/set-simplepslogger",
+      "commands/remove-simplepslogger",
+      "commands/write-simplelog",
+      "commands/clear-buffer",
+      "commands/register-loggingprovider",
+    ],
   },
 };

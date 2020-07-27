@@ -22,7 +22,7 @@ We assume that you have successfully create custom logging provider by following
 
 ### Registration
 
-```powershell {30}
+```powershell {29}
 # 1. Import SimplePSLogger module
 Import-Module -Name SimplePSLogger
 # 2. Import your custom logging provider module
@@ -49,13 +49,17 @@ $SimplePSLoggerConfig = @{
 }
 
 # 3. Create SimplePSLogger instance
-$MyLogger = New-SimplePSLogger -Name "ps-play"
+New-SimplePSLogger -Name "ps-play"
 
-# 4. Register your provider using .Register method. MAKE SURE function named "ExtProvider" is imported
-$MyLogger.RegisterProvider("AwesomeLogger", "ExtProvider", $SimplePSLoggerConfig.Providers["AwesomeLogger"])
+Register-LoggingProvider -Name "AwesomeLogger" `
+                        -FunctionName "ExtProvider" `
+                        -Configuration $SimplePSLoggerConfig.Providers["AwesomeLogger"]
 
-
-$MyLogger.Log("test")
+Write-SimpleLog "sgl" "warning"
+# Flush logs
+Clear-Buffer -Name "ps-play"
+# Remove logger instance
+Remove-SimplePSLogger -Name "ps-play"
 ```
 
 ### Registration Paramters
