@@ -3,7 +3,11 @@ param (
     [Parameter(Mandatory = $true, HelpMessage = "PowerShell Gallery Api key")]
     [ValidateNotNull()]
     [string]
-    $NuGetApiKey
+    $NuGetApiKey,
+    [Parameter(Mandatory = $true, HelpMessage = "Archive Path")]
+    [ValidateNotNull()]
+    [string]
+    $ArchivePath
 )
 Begin {
     Write-Output "Publishing module to PowerShell Gallery"
@@ -12,7 +16,7 @@ Begin {
 Process {
     try {
         #TODO: code sign
-        Publish-Module -Path ./SimplePSLogger -NuGetApiKey $NuGetApiKey`
+        Publish-Module -Path $ArchivePath -NuGetApiKey $NuGetApiKey`
         -ProjectUri "https://github.com/geekwhocodes/simple-ps-logger"`
             -Tags "powershell, powershellcore, logging, logger, simplelogging, simplelogger,  pscore, log"`
             -LicenseUri "https://github.com/geekwhocodes/simple-ps-logger/blob/master/LICENSE"`
