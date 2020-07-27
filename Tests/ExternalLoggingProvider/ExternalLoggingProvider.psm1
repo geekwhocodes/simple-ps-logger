@@ -14,6 +14,9 @@ function AwesomeLoggingProvider {
         [object]
         $Config
     )
+
+    $null = $Config
+
     $InformationPreference = "Continue"
     $logMessage = "$((Get-Date).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss:ffff tt")) $Name $($Level): $($Message.Trim())"
 

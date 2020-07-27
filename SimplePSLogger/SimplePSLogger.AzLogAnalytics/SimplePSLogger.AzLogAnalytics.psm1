@@ -143,7 +143,7 @@ Function New-AzLogAnalytics-Logger {
         New-Item $bufferFileName -ItemType file
     }
 
-    $currentBufferSize = Get-Content $bufferFileName | Measure-Object –Line
+    $currentBufferSize = Get-Content $bufferFileName | Measure-Object -Line
     $LogsToFlush = New-Object Collections.Generic.List[Object]
 
     if ($currentBufferSize.Lines -ge $Config["BufferSize"] -or $Flush) {
@@ -195,4 +195,5 @@ Function New-AzLogAnalytics-Logger {
 
 # TODO : is there any way to ignore other functions export?
 Export-ModuleMember -Function New-AzLogAnalytics-Logger, Send-LogAnalyticsData, Build-Signature
+
 
