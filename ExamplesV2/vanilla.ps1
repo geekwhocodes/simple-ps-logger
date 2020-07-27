@@ -19,7 +19,7 @@ $SimplePSLoggerConfig = @{
     New-SimplePSLogger -Name "vanilla-script" -Configuration $SimplePSLoggerConfig
 }
 #New-SimplePSLogger -Name "vanilla-script"
-$rt = New-SimplePSLogger -Name "vanilla-script-2" -Configuration $SimplePSLoggerConfig
+New-SimplePSLogger -Name "vanilla-script-2" -Configuration $SimplePSLoggerConfig
 
 Set-SimplePSLogger -Name "vanilla-script"
 # Get-Process | Select-Object -Property @{
