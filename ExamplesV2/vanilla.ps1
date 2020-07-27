@@ -20,7 +20,6 @@ $SimplePSLoggerConfig = @{
 }
 #New-SimplePSLogger -Name "vanilla-script"
 New-SimplePSLogger -Name "vanilla-script-2" -Configuration $SimplePSLoggerConfig
-
 Set-SimplePSLogger -Name "vanilla-script"
 # Get-Process | Select-Object -Property @{
 #     label      = 'Message';
