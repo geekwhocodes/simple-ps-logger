@@ -18,7 +18,7 @@
     <img src="https://img.shields.io/codefactor/grade/github/geekwhocodes/simple-ps-logger?style=flat-square" alt="Code Quality" />
   </a>
   
-  <img src="https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/dev?style=flat-square" alt="last commit">
+  <img src="https://img.shields.io/github/last-commit/geekwhocodes/simple-ps-logger/master?style=flat-square" alt="last commit">
   <img src="https://img.shields.io/github/license/geekwhocodes/simple-ps-logger?style=flat-square" alt="license">
 </p>
 
