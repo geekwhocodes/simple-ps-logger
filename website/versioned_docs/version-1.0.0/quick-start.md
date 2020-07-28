@@ -19,7 +19,7 @@ Setup logger into your script under less than a minute 🚀
 
 ```powershell
 # Install from PS Gallery 
-Install-Module -Name SimplePSLogger -Scope CurrentUser
+Install-Module -Name SimplePSLogger -RequiredVersion 1.0.0 -Scope CurrentUser
 ```
 #### Import from Directory
 
