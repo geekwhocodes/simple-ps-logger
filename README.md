@@ -223,8 +223,8 @@ If you find any bugs when using this module, Please an [issue on github](https:/
 
 If there is a feature you would like to see  in SimplePSLogger file an [issue on github](https://github.com/geekwhocodes/simple-ps-logger/issues)
 
-
-
+# Show your love
+Give a ⭐ if you find this project helpful!
 
 
 [SimplePSLoggerImg]:  https://img.shields.io/powershellgallery/v/SimplePSLogger?include_prereleases&label=SimplePSLogger&style=flat-square
