@@ -39,8 +39,7 @@ Describe "SimplePSLogger Class" {
         }
 
         It "gives name '<Name>', it returns '<Expected>'" -TestCases @(
-            @{Name = 'MySPSL'; Expected = 'MySPSL' }
-            @{Name = 'MyPowerShellLogger'; Expected = 'MyPowerShellLogger' }) 
+            @{Name = 'MySPSL'; Expected = 'MySPSL' })
         {
             param ($Name, $Expected)
             
