@@ -193,7 +193,7 @@ Remove-SimplePSLogger -Name "MyLogger"
 
 | Provider                                                                                            | Description                                | Docs                                                                                            |
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| Console                                                                                             | Outputs logs to console                    | [Console Provider](https://spsl.geekwhocodes.me/providers/simplepslogger.console)               |
+| Console                                                                                             | Outputs logs to console                    | [Console Provider](https://spsl.geekwhocodes.me/docs/simplepslogger.console)               |
 | File                                                                                                | Writes logs to static file                 | [File Provider](https://spsl.geekwhocodes.me/docs/simplepslogger.file)                     |
 | [AzLogAnalytics](https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/get-started-portal) | Send logs to Azure Log Analytics Workspace | [AzLogAnalytics Provider](https://spsl.geekwhocodes.me/docs/simplepslogger.azloganalytics) |
 | Rolling File                                                                                        | Writes logs to file                        | [To do](https://github.com/geekwhocodes/simple-ps-logger/projects/3#card-40824479)              |
